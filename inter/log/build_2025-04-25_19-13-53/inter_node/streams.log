@@ -1,0 +1,24 @@
+[0.881s] Invoking command in '/home/daniel/Documentos/Project_ws/inter/src/inter_node': DEBUGINFOD_URLS=https://debuginfod.ubuntu.com PYTHONPATH=/home/daniel/Documentos/Project_ws/inter/build/inter_node/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/daniel/Documentos/Project_ws/inter/install/inter_node/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/inter_node build --build-base /home/daniel/Documentos/Project_ws/inter/build/inter_node/build install --record /home/daniel/Documentos/Project_ws/inter/build/inter_node/install.log --single-version-externally-managed install_data
+[1.179s] running egg_info
+[1.197s] writing ../../build/inter_node/inter_node.egg-info/PKG-INFO
+[1.197s] writing dependency_links to ../../build/inter_node/inter_node.egg-info/dependency_links.txt
+[1.198s] writing entry points to ../../build/inter_node/inter_node.egg-info/entry_points.txt
+[1.198s] writing requirements to ../../build/inter_node/inter_node.egg-info/requires.txt
+[1.198s] writing top-level names to ../../build/inter_node/inter_node.egg-info/top_level.txt
+[1.238s] reading manifest file '../../build/inter_node/inter_node.egg-info/SOURCES.txt'
+[1.238s] writing manifest file '../../build/inter_node/inter_node.egg-info/SOURCES.txt'
+[1.239s] running build
+[1.239s] running build_py
+[1.239s] copying inter_node/inter_node.py -> /home/daniel/Documentos/Project_ws/inter/build/inter_node/build/lib/inter_node
+[1.239s] running install
+[1.247s] running install_lib
+[1.266s] copying /home/daniel/Documentos/Project_ws/inter/build/inter_node/build/lib/inter_node/inter_node.py -> /home/daniel/Documentos/Project_ws/inter/install/inter_node/lib/python3.12/site-packages/inter_node
+[1.267s] byte-compiling /home/daniel/Documentos/Project_ws/inter/install/inter_node/lib/python3.12/site-packages/inter_node/inter_node.py to inter_node.cpython-312.pyc
+[1.271s] running install_data
+[1.271s] running install_egg_info
+[1.292s] removing '/home/daniel/Documentos/Project_ws/inter/install/inter_node/lib/python3.12/site-packages/inter_node-0.0.0-py3.12.egg-info' (and everything under it)
+[1.292s] Copying ../../build/inter_node/inter_node.egg-info to /home/daniel/Documentos/Project_ws/inter/install/inter_node/lib/python3.12/site-packages/inter_node-0.0.0-py3.12.egg-info
+[1.293s] running install_scripts
+[1.425s] Installing broker script to /home/daniel/Documentos/Project_ws/inter/install/inter_node/lib/inter_node
+[1.425s] writing list of installed files to '/home/daniel/Documentos/Project_ws/inter/build/inter_node/install.log'
+[1.457s] Invoked command in '/home/daniel/Documentos/Project_ws/inter/src/inter_node' returned '0': DEBUGINFOD_URLS=https://debuginfod.ubuntu.com PYTHONPATH=/home/daniel/Documentos/Project_ws/inter/build/inter_node/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/daniel/Documentos/Project_ws/inter/install/inter_node/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/inter_node build --build-base /home/daniel/Documentos/Project_ws/inter/build/inter_node/build install --record /home/daniel/Documentos/Project_ws/inter/build/inter_node/install.log --single-version-externally-managed install_data

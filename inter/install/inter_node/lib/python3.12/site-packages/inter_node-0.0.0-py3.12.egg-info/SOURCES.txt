@@ -1,0 +1,17 @@
+package.xml
+setup.cfg
+setup.py
+../../build/inter_node/inter_node.egg-info/PKG-INFO
+../../build/inter_node/inter_node.egg-info/SOURCES.txt
+../../build/inter_node/inter_node.egg-info/dependency_links.txt
+../../build/inter_node/inter_node.egg-info/entry_points.txt
+../../build/inter_node/inter_node.egg-info/requires.txt
+../../build/inter_node/inter_node.egg-info/top_level.txt
+../../build/inter_node/inter_node.egg-info/zip-safe
+inter_node/__init__.py
+inter_node/inter_node.py
+resource/inter_node
+test/test_copyright.py
+test/test_flake8.py
+test/test_pep257.py
+test/test_xmllint.py

@@ -1,0 +1,2 @@
+[console_scripts]
+broker = inter_node.inter_node:main
