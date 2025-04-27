@@ -1,0 +1,8 @@
+/build/
+*.tmp
+*.log
+
+*inter_node_copy.py
+*ZMQ_rob.py
+*player2.xml
+*demoZMQ.py

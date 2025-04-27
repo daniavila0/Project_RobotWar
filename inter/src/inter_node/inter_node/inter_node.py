@@ -190,6 +190,14 @@ def robot_thread(name,fovmat):
             # El fovmat del robot solo lee su parte
             self.fovmat = fovmat # debe de ser asi para que sea un diccionario compartido
             print(f"[ DEBUG ] Este el el fovmat de {self.alias}:\n {self.fovmat.get(self.alias,{})}")
+            '''
+            [ DEBUG ] Este el el fovmat de Robot_1:
+            {'robots': [-1],
+             'chargers': [4.062976385420454, 8.222223695267306, 3.524774232660133],
+             'skills': [3.524774232660133, 3.524774232660133, 3.524774232660133, 3.524774232660133],
+             'obstacles': [3.524774232660133, 3.524774232660133, 3.524774232660133, 3.524774232660133, 3.524774232660133]}
+
+            '''
             # Se lee    self.fovmat.get(self.alias, {})
             # Publicadores y Subsciptores
             self.subscriber_vel = self.create_subscription(Twist,'/control_'+self.alias+'/cmdvel',self.cmd_callback,3)
@@ -262,25 +270,7 @@ def robot_thread(name,fovmat):
             self.read_scene_data()
             scene_copy = copy.deepcopy(self.sceneData)
             #node.get_logger().info(f'Funciona el cmd thread del {name}')
-            '''
-            v = sim.getNamedFloatParam("cmd_vel_v_"+self.alias)
-            w = sim.getNamedFloatParam("cmd_vel_w_"+self.alias)
-            v = 0 if v is None else v
-            w = 0 if w is None else w
-            # Battery management
-            if sim.getNamedBoolParam("charger_enabled_"+self.alias):
-                battery = battery + 1 if battery < 100 else 100.0
-            else:
-                if (battery>0.0):
-                    battery = battery - 0.01*(np.abs(self.v)+np.abs(self.w))
-                    battery = 0.0 if battery<=0.0 else battery
-            sim.setNamedBoolParam("battery_lvl_"+self.alias)
-                # sceneData["robots"]["RobotAlias"]["battery"]= battery
-                # sim.setBuffer  #
-            if battery < 0.1:
-                self.v=0.1*self.v
-                self.w=0.1*self.w
-            
+            '''           
             # Health Management
             self.health_level=sim.getNamedParam("health_"+self.alias)
             if self.health_level == 0.0:
@@ -297,6 +287,27 @@ def robot_thread(name,fovmat):
             self.sceneData["Robots"][self.alias]["Pose"]=[p[0],p[1],o[2]]
             self.sceneData["Robots"][self.alias]["Health"]=self.health_level
             '''
+            # ESTO SI LO SACO A UNA FUNCIÓN PUEDO CONTROLAR EL TIEMPO DE CARGA APARTE   
+            # Battery management
+            battery = self.sceneData["Robots"][self.alias]["Battery"]
+            close2charger= False 
+            for dist in self.fovmat.get(self.alias,{}).get("chargers") :
+                if dist < 0.2:
+                    close2charger=True 
+                    break
+            if close2charger and self.v==0:    # Cerca de un cargador y está parado
+                battery = battery + 1 if battery < 100 else 100.0
+            else:
+                if (battery>0.0):
+                    battery = battery - 0.01*(np.abs(self.v)+np.abs(self.w))
+                    battery = 0.0 if battery<=0.0 else battery
+            self.sceneData["Robots"][self.alias]["Battery"]= battery# despues hay que hacer un write
+
+            if battery < 5:
+                self.v=0.1*self.v
+                self.w=0.1*self.w
+
+            
             #print(f"v:{self.v},w:{self.w}")
             # cmd_vel to wheel speeds conversion
             if not(self.w==0):
@@ -328,11 +339,12 @@ def robot_thread(name,fovmat):
                         sim.setObjectInt32Param(sim.getObject("../Shield"),sim.objintparam_visibility_layer,0)
                         shieldTimer_set = False                
             '''
+            self.write_scene_data()
 
         def read_scene_data(self):
             self.sceneData=json.loads(sim.getBufferProperty(sim.handle_scene, "customData.myTag"))
-        def write_scene_data(self,scene_copy):
-            sim.setBufferProperty(sim.handle_scene, "customData.myTag", json.dumps(scene_copy))
+        def write_scene_data(self):
+            sim.setBufferProperty(sim.handle_scene, "customData.myTag", json.dumps(self.sceneData))
             
         def cmd_callback (self,msg):
             #node.get_logger().info(f'Funciona el cmd callback de {name}')
