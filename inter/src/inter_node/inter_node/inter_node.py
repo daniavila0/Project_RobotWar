@@ -70,10 +70,6 @@ class Broker (Node):
         # params
         sim.setNamedBoolParam("hammer_enabled_"+alias,False)
         sim.setNamedBoolParam("shield_enabled_"+alias,False)
-        #Tambien se crea un parametro para la recarga de bateria.
-        sim.setNamedBoolParam("charger_enabled_"+alias,False)
-        # Otro parametro adicional para el nivel de vida.
-        sim.setNamedInt32Param("health_"+alias,100)
         #sim.setNamedStringParam("nick_Robot"+self.n_robots,msg.data)
         # poses
         def valid_pose(pos,poses_):
@@ -94,7 +90,7 @@ class Broker (Node):
         #p[2]= 0
         sim.setObjectPosition(robot,-1,p)
         sim.setObjectOrientation(robot,-1,o)
-        self.sceneData["Robots"][alias]={"Battery": 100,"Pose":[p[0],p[1],o[2]]} 
+        self.sceneData["Robots"][alias]={"Battery": 100,"Pose":[p[0],p[1],o[2]],"Health": 100} 
                                          
         
         simple_scene_data = copy.deepcopy(self.sceneData)
@@ -203,7 +199,7 @@ def robot_thread(name,fovmat):
             self.subscriber_vel = self.create_subscription(Twist,'/control_'+self.alias+'/cmdvel',self.cmd_callback,3)
             self.laser_publisher = self.create_publisher(LaserScan, f'/{self.alias}/laser_scan', 10)
             # Timer 
-            self.timer = self.create_timer(5, self.thread)
+            self.timer = self.create_timer(10, self.thread)
             '''
             publicar scene
             refrescar scene
@@ -268,25 +264,8 @@ def robot_thread(name,fovmat):
 
         def thread(self):
             self.read_scene_data()
-            scene_copy = copy.deepcopy(self.sceneData)
             #node.get_logger().info(f'Funciona el cmd thread del {name}')
-            '''           
-            # Health Management
-            self.health_level=sim.getNamedParam("health_"+self.alias)
-            if self.health_level == 0.0:
-                self.v=0
-                self.w=0
-                fire = sim.loadModel(sim.getStringParam(sim.stringparam_scene_path)+"/model_fire.ttm")
-                p_robot = sim.getObjectPosition(self.handler,sim.handle_world)
-                sim.setObjectPosition(fire,-1,p_robot)
-                print("GAME OVER for "+self.alias)
-                self.endgame = True
-            # Refresh current position and health to scene Data
-            p=sim.getObjectPosition(self.handler,sim.handle_world)
-            o=sim.getObjectOrientation(self.handler,sim.handle_world)
-            self.sceneData["Robots"][self.alias]["Pose"]=[p[0],p[1],o[2]]
-            self.sceneData["Robots"][self.alias]["Health"]=self.health_level
-            '''
+
             # ESTO SI LO SACO A UNA FUNCIÓN PUEDO CONTROLAR EL TIEMPO DE CARGA APARTE   
             # Battery management
             battery = self.sceneData["Robots"][self.alias]["Battery"]
@@ -299,14 +278,14 @@ def robot_thread(name,fovmat):
                 battery = battery + 1 if battery < 100 else 100.0
             else:
                 if (battery>0.0):
-                    battery = battery - 0.01*(np.abs(self.v)+np.abs(self.w))
+                    battery = battery - 0.01 - 0.01*(np.abs(self.v)+np.abs(self.w))
                     battery = 0.0 if battery<=0.0 else battery
             self.sceneData["Robots"][self.alias]["Battery"]= battery# despues hay que hacer un write
 
             if battery < 5:
                 self.v=0.1*self.v
                 self.w=0.1*self.w
-
+            print (f"[ DEBUG ] Battery : {battery}\t Cerca de cargador : {close2charger}")
             
             #print(f"v:{self.v},w:{self.w}")
             # cmd_vel to wheel speeds conversion
@@ -322,6 +301,33 @@ def robot_thread(name,fovmat):
 
             sim.setJointTargetVelocity(self.motorLeft,vLeft/wheel_radius)
             sim.setJointTargetVelocity(self.motorRight,vRight/wheel_radius)
+            # Health management
+            # puedo hacer que health este en self o que este en sceneData
+            self.health_level=self.sceneData["Robots"][self.alias].get("Health")
+            #self.health_level=0   Funciona
+            print (f"[ DEBUG ] Health : {self.health_level}")
+            if self.health_level <=0 and not self.endgame:
+                self.v=0
+                self.w=0
+                fire = sim.loadModel(sim.getStringParam(sim.stringparam_scene_path)+"/model_fire.ttm")
+                p_robot = sim.getObjectPosition(self.handler,sim.handle_world)
+                sim.setObjectPosition(fire,-1,p_robot)
+                print("GAME OVER for "+self.alias)
+                self.endgame = True
+
+            # Lectura Skills
+            # Ver si tiene alguna cerca
+            close2skill=False
+            for index,skill_pos in enumerate(self.fovmat.get(self.alias,{}).get('skills')):
+                if skill_pos < 0.5:
+                    name = "skill_"+str(index+1)
+                    close2skill=True
+                    break
+            # Identificar la skill
+            if close2skill:
+                ability=self.sceneData["Skills"][name].get("ID")
+                #ability=self.sceneData["Skills"][name].get("ID")
+                print(f"[ DEBUG ] Habilidad : {ability}")
             '''
             self.hammerEnabled = sim.getNamedBoolParam("hammer_enabled_"+self.alias)
             self.shieldEnabled = sim.getNamedBoolParam("shield_enabled_"+self.alias)
@@ -389,7 +395,7 @@ def robot_thread(name,fovmat):
                                 sim.addDrawingObjectItem(self.lines, t)
             pass        
         def pub_laser(self):
-            if len(self.measuredData) > 0:
+            if self.measuredData:
                 msg = {
                     'header': {
                         'stamp': sim.getSimulationTime(), # estaba simROS2 en vez de sim

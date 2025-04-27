@@ -70,10 +70,6 @@ class Broker (Node):
         # params
         sim.setNamedBoolParam("hammer_enabled_"+alias,False)
         sim.setNamedBoolParam("shield_enabled_"+alias,False)
-        #Tambien se crea un parametro para la recarga de bateria.
-        sim.setNamedBoolParam("charger_enabled_"+alias,False)
-        # Otro parametro adicional para el nivel de vida.
-        sim.setNamedInt32Param("health_"+alias,100)
         #sim.setNamedStringParam("nick_Robot"+self.n_robots,msg.data)
         # poses
         def valid_pose(pos,poses_):
@@ -94,14 +90,16 @@ class Broker (Node):
         #p[2]= 0
         sim.setObjectPosition(robot,-1,p)
         sim.setObjectOrientation(robot,-1,o)
-        self.sceneData["Robots"][alias]={"Battery": 100,"Pose":[p[0],p[1],o[2]]} 
+        self.sceneData["Robots"][alias]={"Battery": 100,"Pose":[p[0],p[1],o[2]],"Health": 100} 
                                          
         
         simple_scene_data = copy.deepcopy(self.sceneData)
         #print(simple_scene_data)
         sim.setBufferProperty(sim.handle_scene, "customData.myTag", json.dumps(simple_scene_data))
+
         # Es necesario tener el fov con nuestro robot antes de llamarlo, aparte del temporizador
-        #self.calculateFOV()
+        self.calculateFOV()
+
         #MULTIPROCESSING
         p=multiprocessing.Process(target=robot_thread,args=["Robot_"+str(self.n_robots),self.fovmat]) #argumento es el handler
         p.start()
@@ -188,12 +186,20 @@ def robot_thread(name,fovmat):
             # El fovmat del robot solo lee su parte
             self.fovmat = fovmat # debe de ser asi para que sea un diccionario compartido
             print(f"[ DEBUG ] Este el el fovmat de {self.alias}:\n {self.fovmat.get(self.alias,{})}")
+            '''
+            [ DEBUG ] Este el el fovmat de Robot_1:
+            {'robots': [-1],
+             'chargers': [4.062976385420454, 8.222223695267306, 3.524774232660133],
+             'skills': [3.524774232660133, 3.524774232660133, 3.524774232660133, 3.524774232660133],
+             'obstacles': [3.524774232660133, 3.524774232660133, 3.524774232660133, 3.524774232660133, 3.524774232660133]}
+
+            '''
             # Se lee    self.fovmat.get(self.alias, {})
             # Publicadores y Subsciptores
             self.subscriber_vel = self.create_subscription(Twist,'/control_'+self.alias+'/cmdvel',self.cmd_callback,3)
             self.laser_publisher = self.create_publisher(LaserScan, f'/{self.alias}/laser_scan', 10)
             # Timer 
-            self.timer = self.create_timer(5, self.thread)
+            self.timer = self.create_timer(10, self.thread)
             '''
             publicar scene
             refrescar scene
@@ -257,77 +263,95 @@ def robot_thread(name,fovmat):
             self.lines=sim.addDrawingObject(sim.drawing_lines,1,0,-1,1000,laser_color)
 
         def thread(self):
-            #while not sim.getSimulationStopping():
-                # Se recogen las velocidades del los parámetros
-                #node.get_logger().info(f'Funciona el cmd thread del {name}')
-                '''
-                v = sim.getNamedFloatParam("cmd_vel_v_"+self.alias)
-                w = sim.getNamedFloatParam("cmd_vel_w_"+self.alias)
-                v = 0 if v is None else v
-                w = 0 if w is None else w
-                # Battery management
-                if sim.getNamedBoolParam("charger_enabled_"+self.alias):
-                    battery = battery + 1 if battery < 100 else 100.0
+            self.read_scene_data()
+            #node.get_logger().info(f'Funciona el cmd thread del {name}')
+
+            # ESTO SI LO SACO A UNA FUNCIÓN PUEDO CONTROLAR EL TIEMPO DE CARGA APARTE   
+            # Battery management
+            battery = self.sceneData["Robots"][self.alias]["Battery"]
+            close2charger= False 
+            for dist in self.fovmat.get(self.alias,{}).get("chargers") :
+                if dist < 0.2:
+                    close2charger=True 
+                    break
+            if close2charger and self.v==0:    # Cerca de un cargador y está parado
+                battery = battery + 1 if battery < 100 else 100.0
+            else:
+                if (battery>0.0):
+                    battery = battery - 0.01 - 0.01*(np.abs(self.v)+np.abs(self.w))
+                    battery = 0.0 if battery<=0.0 else battery
+            self.sceneData["Robots"][self.alias]["Battery"]= battery# despues hay que hacer un write
+
+            if battery < 5:
+                self.v=0.1*self.v
+                self.w=0.1*self.w
+            print (f"[ DEBUG ] Battery : {battery}\t Cerca de cargador : {close2charger}")
+            
+            #print(f"v:{self.v},w:{self.w}")
+            # cmd_vel to wheel speeds conversion
+            if not(self.w==0):
+                R=self.v/self.w
+                vLeft= self.w*(R-distance_between_wheels/2)
+                vRight=self.w*(R+distance_between_wheels/2)
+            else:
+                vLeft=self.v
+                vRight=self.v
+            vLeft= 0.0 if vLeft is None else vLeft
+            vRight= 0.0 if vRight is None else vRight
+
+            sim.setJointTargetVelocity(self.motorLeft,vLeft/wheel_radius)
+            sim.setJointTargetVelocity(self.motorRight,vRight/wheel_radius)
+            # Health management
+            # puedo hacer que health este en self o que este en sceneData
+            self.health_level=self.sceneData["Robots"][self.alias].get("Health")
+            #self.health_level=0   Funciona
+            print (f"[ DEBUG ] Health : {self.health_level}")
+            if self.health_level <=0 and not self.endgame:
+                self.v=0
+                self.w=0
+                fire = sim.loadModel(sim.getStringParam(sim.stringparam_scene_path)+"/model_fire.ttm")
+                p_robot = sim.getObjectPosition(self.handler,sim.handle_world)
+                sim.setObjectPosition(fire,-1,p_robot)
+                print("GAME OVER for "+self.alias)
+                self.endgame = True
+
+            # Lectura Skills
+            # Ver si tiene alguna cerca
+            close2skill=False
+            for index,skill_pos in enumerate(self.fovmat.get(self.alias,{}).get('skills')):
+                if skill_pos < 0.5:
+                    name = "skill_"+str(index+1)
+                    close2skill=True
+                    break
+            # Identificar la skill
+            if True:
+                ability=self.sceneData["Skills"]["skill_1"].get("ID")
+                #ability=self.sceneData["Skills"][name].get("ID")
+                print(f"[ DEBUG ] Habilidad : {ability}")
+            '''
+            self.hammerEnabled = sim.getNamedBoolParam("hammer_enabled_"+self.alias)
+            self.shieldEnabled = sim.getNamedBoolParam("shield_enabled_"+self.alias)
+            currentTime=sim.getSimulationTime()
+
+            # Shield
+            if self.shieldEnabled:
+                if not shieldTimer_set:
+                    shield_startTime=sim.getSimulationTime()
+                    shieldTimer_set=True
+                    sim.setObjectInt32Param(sim.getObject("../Shield"),sim.objintparam_visibility_layer,1)
                 else:
-                    if (battery>0.0):
-                        battery = battery - 0.01*(np.abs(self.v)+np.abs(self.w))
-                        battery = 0.0 if battery<=0.0 else battery
-                sim.setNamedBoolParam("battery_lvl_"+self.alias)
-                 # sceneData["robots"]["RobotAlias"]["battery"]= battery
-                 # sim.setBuffer  #
-                if battery < 0.1:
-                    self.v=0.1*self.v
-                    self.w=0.1*self.w
-                
-                # Health Management
-                self.health_level=sim.getNamedParam("health_"+self.alias)
-                if self.health_level == 0.0:
-                    self.v=0
-                    self.w=0
-                    fire = sim.loadModel(sim.getStringParam(sim.stringparam_scene_path)+"/model_fire.ttm")
-                    p_robot = sim.getObjectPosition(self.handler,sim.handle_world)
-                    sim.setObjectPosition(fire,-1,p_robot)
-                    print("GAME OVER for "+self.alias)
-                    self.endgame = True
-                # Refresh current position and health to scene Data
-                p=sim.getObjectPosition(self.handler,sim.handle_world)
-                o=sim.getObjectOrientation(self.handler,sim.handle_world)
-                self.sceneData["Robots"][self.alias]["Pose"]=[p[0],p[1],o[2]]
-                self.sceneData["Robots"][self.alias]["Health"]=self.health_level
-                '''
-                #print(f"v:{self.v},w:{self.w}")
-                # cmd_vel to wheel speeds conversion
-                if not(self.w==0):
-                    R=self.v/self.w
-                    vLeft= self.w*(R-distance_between_wheels/2)
-                    vRight=self.w*(R+distance_between_wheels/2)
-                else:
-                    vLeft=self.v
-                    vRight=self.v
-                vLeft= 0.0 if vLeft is None else vLeft
-                vRight= 0.0 if vRight is None else vRight
+                    if (currentTime - shield_startTime > self.ability_duration):
+                        sim.setNamedBoolParam("shield_enabled_"+self.alias,False)
+                        sim.setObjectInt32Param(sim.getObject("../Shield"),sim.objintparam_visibility_layer,0)
+                        shieldTimer_set = False                
+            '''
+            self.write_scene_data()
 
-                sim.setJointTargetVelocity(self.motorLeft,vLeft/wheel_radius)
-                sim.setJointTargetVelocity(self.motorRight,vRight/wheel_radius)
-                '''
-                self.hammerEnabled = sim.getNamedBoolParam("hammer_enabled_"+self.alias)
-                self.shieldEnabled = sim.getNamedBoolParam("shield_enabled_"+self.alias)
-                currentTime=sim.getSimulationTime()
-
-                # Shield
-                if self.shieldEnabled:
-                    if not shieldTimer_set:
-                        shield_startTime=sim.getSimulationTime()
-                        shieldTimer_set=True
-                        sim.setObjectInt32Param(sim.getObject("../Shield"),sim.objintparam_visibility_layer,1)
-                    else:
-                        if (currentTime - shield_startTime > self.ability_duration):
-                            sim.setNamedBoolParam("shield_enabled_"+self.alias,False)
-                            sim.setObjectInt32Param(sim.getObject("../Shield"),sim.objintparam_visibility_layer,0)
-                            shieldTimer_set = False                
-                '''
-
-
+        def read_scene_data(self):
+            self.sceneData=json.loads(sim.getBufferProperty(sim.handle_scene, "customData.myTag"))
+        def write_scene_data(self):
+            sim.setBufferProperty(sim.handle_scene, "customData.myTag", json.dumps(self.sceneData))
+            
         def cmd_callback (self,msg):
             #node.get_logger().info(f'Funciona el cmd callback de {name}')
             '''
@@ -371,7 +395,7 @@ def robot_thread(name,fovmat):
                                 sim.addDrawingObjectItem(self.lines, t)
             pass        
         def pub_laser(self):
-            if len(self.measuredData) > 0:
+            if self.measuredData:
                 msg = {
                     'header': {
                         'stamp': sim.getSimulationTime(), # estaba simROS2 en vez de sim
