@@ -171,7 +171,36 @@ def Fov_array(sceneData,fovmat):
 
     #print(f"[ DEBUG ] Este es el fovmat dentro : {fovmat}")
 
+def list_to_matrix(m):
+    """Convierte lista de 12 elementos (Coppelia) a matriz 4x4 numpy."""
+    return np.array([
+        [m[0], m[1], m[2], m[3]],
+        [m[4], m[5], m[6], m[7]],
+        [m[8], m[9], m[10], m[11]],
+        [0.0, 0.0, 0.0, 1.0]
+    ])
 
+def matrix_to_list(m):
+    """Convierte matriz 4x4 numpy a lista de 12 elementos (para Coppelia)."""
+    return [
+        m[0,0], m[0,1], m[0,2], m[0,3],
+        m[1,0], m[1,1], m[1,2], m[1,3],
+        m[2,0], m[2,1], m[2,2], m[2,3]
+    ]
+
+def invert_matrix(m):
+    """Invierte matriz 4x4."""
+    return np.linalg.inv(m)
+
+def multiply_matrices(m1, m2):
+    """Multiplica dos matrices 4x4."""
+    return np.dot(m1, m2)
+
+def multiply_vector(m, v):
+    """Multiplica matriz 4x4 por vector 3D (añadiendo 1 al final)."""
+    v_hom = np.array([v[0], v[1], v[2], 1.0])
+    res = np.dot(m, v_hom)
+    return res[:3]  # devolvemos sólo x, y, z
 
 
 def robot_thread(name,fovmat):
@@ -185,7 +214,7 @@ def robot_thread(name,fovmat):
             ### IMPORTANTE 
             # El fovmat del robot solo lee su parte
             self.fovmat = fovmat # debe de ser asi para que sea un diccionario compartido
-            print(f"[ DEBUG ] Este el el fovmat de {self.alias}:\n {self.fovmat.get(self.alias,{})}")
+            #print(f"[ DEBUG ] Este el el fovmat de {self.alias}:\n {self.fovmat.get(self.alias,{})}")
             '''
             [ DEBUG ] Este el el fovmat de Robot_1:
             {'robots': [-1],
@@ -199,7 +228,8 @@ def robot_thread(name,fovmat):
             self.subscriber_vel = self.create_subscription(Twist,'/control_'+self.alias+'/cmdvel',self.cmd_callback,3)
             self.laser_publisher = self.create_publisher(LaserScan, f'/{self.alias}/laser_scan', 10)
             # Timer 
-            self.timer = self.create_timer(10, self.thread)
+            self.timerThread = self.create_timer(10, self.thread)
+            self.timerSensing=self.create_timer(10,self.sensing)
             '''
             sensing
             pub laser
@@ -241,7 +271,7 @@ def robot_thread(name,fovmat):
             self.measuredData=[]
             self.showLines=False
             self.generateData=True
-            self.rangaData=True
+            self.rangeData=True
             self.discardMaxDistPts= True
             self.visionSensors=[sim.getObject("./sensor1"),sim.getObject("./sensor2")]
     
@@ -412,37 +442,52 @@ def robot_thread(name,fovmat):
             pass
 
         def sensing(self):
-            sim.addDrawingObjectItem(self.lines,None)
-            self.measuredData=[]
-            for index,sensor in self.visionSensors:
-                r,t,u=sim.readVisionSensor(sensor)
-                if u and u[1]:
-                    sensorM = sim.getObjectMattrix(sensor,sim.handle_world)
-                    relRefM = sim.getObjectMatrix(self.selfsense,sim.handle_world)
-                    sim.invertMatrix(relRefM)
-                    relRefM=sim.multiplyMatrices(relRefM,sensorM)
-                    p=[0,0,0]
-                    p=sim.multiplyVector(sensorM,p) # OPERAR CON NUMPY
-                    t=[p[0],p[1],p[2],0,0,0]
-                    for j in range(u[1]-1):
-                        for k in range(u[1]-1):
-                            w = 2 + 4 * (j * int(u[1]) + k)
-                            v = [u[w+1], u[w+2], u[w+3], u[w+4]]
+            sim.addDrawingObjectItem(self.lines, None)
+            self.measuredData = []
 
-                            if self.generateData:
-                                if self.rangeData:
-                                    # Aquí se puede aplicar ruido: gaussian(0, sigma)
-                                    self.measuredData.append(v[3])  # sin ruido
-                                else:
-                                    if v[3] < self.maxScanDistance * 0.9999 or not self.discardMaxDistPts:
-                                        p = sim.multiplyVector(relRefM, v)
-                                        self.measuredData.extend([p[0], p[1], p[2]])
+            for i in range(2):
+                r, t, u = sim.readVisionSensor(self.visionSensors[i])
 
-                            if self.showLines:
-                                p = sim.multiplyVector(sensorM, v)
-                                t[3], t[4], t[5] = p[0], p[1], p[2]
-                                sim.addDrawingObjectItem(self.lines, t)
+                if u:
+                    sensorM_list = sim.getObjectMatrix(self.visionSensors[i], sim.handle_world)
+                    relRefM_list = sim.getObjectMatrix(self.selfsense, sim.handle_world)
+
+                    sensorM = list_to_matrix(sensorM_list)
+                    relRefM = list_to_matrix(relRefM_list)
+
+                    relRefM_inv = invert_matrix(relRefM)
+                    relRefM_sensor = multiply_matrices(relRefM_inv, sensorM)
+
+                    p = multiply_vector(sensorM, [0, 0, 0])
+                    t = [p[0], p[1], p[2], 0, 0, 0]
+
+                    u1 = int(u[0]) # dimension horizontal
+                    u2 = int(u[1]) # dimension vertical
+
+                    for j in range(u2):
+                        for k in range(u1):
+                            w = 2 + 4 * (j * u1 + k)
+                            if w+3 < len(u): # Controlar que no se pase
+                                v = [u[w], u[w+1], u[w+2], u[w+3]] # datos x y z dist
+
+                                if self.generateData:
+                                    if self.rangeData:
+                                        self.measuredData.append(v[3])
+                                    else:
+                                        if v[3] < self.maxScanDistance * 0.9999 or not self.discardMaxDistPts:
+                                            p_rel = multiply_vector(relRefM_sensor, v)
+                                            self.measuredData.extend([p_rel[0], p_rel[1], p_rel[2]])
+
+                                if self.showLines:
+                                    p_sensor = multiply_vector(sensorM, v)
+                                    t[3], t[4], t[5] = p_sensor[0], p_sensor[1], p_sensor[2]
+                                    sim.addDrawingObjectItem(self.lines, t)
+
+            #print(f"[ SENSING ] Measured Data : {self.measuredData}") # Funciona
+            self.pub_laser()
+
             pass        
+
         def pub_laser(self):
             if self.measuredData:
                 msg = {
@@ -460,6 +505,7 @@ def robot_thread(name,fovmat):
                     'ranges': self.measuredData,
                     'intensities': []
                 }
+            print(f"[ PUBLISH ] msg:{msg}")
             self.laser_publisher.publish(msg) # Entiendo que aqui de error por el tipo de dato del publish
             pass
     node = RobotNode(fovmat)
