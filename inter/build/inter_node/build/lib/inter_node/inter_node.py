@@ -20,6 +20,7 @@ from std_msgs.msg import String
 from geometry_msgs.msg import Twist
 #from geometry_msgs import Point
 from sensor_msgs.msg import LaserScan
+from std_msgs.msg import Header
 #from rosgame_msgs import rosgame_twist
 #from rosgame_msgs import rosgame_point
 
@@ -34,6 +35,7 @@ laser_color=[1,0,0]
 distance_between_wheels = 0.331 # meters
 wheel_radius = 0.097518         # meters
 
+verbose = False
 
 class Broker (Node):
         
@@ -52,8 +54,8 @@ class Broker (Node):
         # Este loads va bien
         # Calculate FOV
         self.fovmat=fovmat
-        self.timer = self.create_timer(5, self.calculateFOV)#Calcula la matriz de distancias 2 veces por segundo
-        self.timerRead = self.create_timer(10,self.read_scene_data)
+        self.timer = self.create_timer(1, self.calculateFOV)
+        self.timerRead = self.create_timer(1,self.read_scene_data)
         self.processes=[]
         
 
@@ -79,7 +81,8 @@ class Broker (Node):
                         return False
                 return True
         poses = self.get_all_positions()
-        #print(f"[ DEBUG ] Estas son las poses iniciales: \n {poses}")
+        if verbose:
+            print(f"[ DEBUG ] Estas son las poses iniciales: \n {poses}") 
         p = sim.getObjectPosition(robot,-1)
         o = sim.getObjectOrientation(robot,-1)
         
@@ -90,7 +93,7 @@ class Broker (Node):
         #p[2]= 0
         sim.setObjectPosition(robot,-1,p)
         sim.setObjectOrientation(robot,-1,o)
-        self.sceneData["Robots"][alias]={"Battery": 100,"Pose":[p[0],p[1],o[2]],"Health": 100} 
+        self.sceneData["Robots"][alias]={"Battery": 100,"Pose":[p[0],p[1],o[2]],"Health": 100,"Skill":{"Hammer":False,"Shield":False}} 
                                          
         
         simple_scene_data = copy.deepcopy(self.sceneData)
@@ -128,12 +131,13 @@ class Broker (Node):
     def calculateFOV(self): # Aqui no se si se estan actualizando
         if self.sceneData:
             scene_copy = copy.deepcopy(self.sceneData)
-            #print(f"Este es el scene_copy:  {scene_copy}")
-            #print(f"Este es el sceneData:  {self.sceneData}") # Funcionan ambos
+            if verbose:
+                print(f"Este es el sceneData:  {self.sceneData}")
             calc = multiprocessing.Process(target=Fov_array, args=(scene_copy,self.fovmat))
             calc.start()
-            calc.join() # Es necesario esperar a que acabe el calculo, si no pueden cogerse valores erróneos
-            #print(f"[ DEBUG ] Este es el fovmat de fuera, despues del join: \n{self.fovmat}")
+            calc.join() # Es necesario esperar a que acabe el calculo, si no pueden cogerse valores erróneo
+            if verbose:
+                print(f"[ DEBUG ] Este es el fovmat de fuera, despues del join: \n{self.fovmat}")
 
 
 def Fov_array(sceneData,fovmat):
@@ -168,8 +172,8 @@ def Fov_array(sceneData,fovmat):
             fovcopy[alias][name] = dist_list
     fovmat.clear()
     fovmat.update(fovcopy)
-
-    #print(f"[ DEBUG ] Este es el fovmat dentro : {fovmat}")
+    if verbose:
+        print(f"[ DEBUG ] Este es el fovmat dentro : {fovmat}")
 
 def list_to_matrix(m):
     """Convierte lista de 12 elementos (Coppelia) a matriz 4x4 numpy."""
@@ -211,10 +215,12 @@ def robot_thread(name,fovmat):
             self.handler=sim.getObject(f'/{name}')
             self.alias=sim.getObjectAlias(self.handler)
             self.sceneData=json.loads(sim.getBufferProperty(sim.handle_scene, "customData.myTag"))
+            self.verbose=True
             ### IMPORTANTE 
             # El fovmat del robot solo lee su parte
             self.fovmat = fovmat # debe de ser asi para que sea un diccionario compartido
-            #print(f"[ DEBUG ] Este el el fovmat de {self.alias}:\n {self.fovmat.get(self.alias,{})}")
+            if verbose:
+                print(f"[ DEBUG ] Este el el fovmat inicial de {self.alias}:\n {self.fovmat.get(self.alias,{})}")
             '''
             [ DEBUG ] Este el el fovmat de Robot_1:
             {'robots': [-1],
@@ -228,8 +234,9 @@ def robot_thread(name,fovmat):
             self.subscriber_vel = self.create_subscription(Twist,'/control_'+self.alias+'/cmdvel',self.cmd_callback,3)
             self.laser_publisher = self.create_publisher(LaserScan, f'/{self.alias}/laser_scan', 10)
             # Timer 
-            self.timerThread = self.create_timer(10, self.thread)
-            self.timerSensing=self.create_timer(10,self.sensing)
+            self.timerThread = self.create_timer(1, self.thread)
+            self.timerSensing=self.create_timer(15,self.sensing)
+            self.timerDebug=self.create_timer(10,self.debugging)
             '''
             sensing
             pub laser
@@ -253,16 +260,17 @@ def robot_thread(name,fovmat):
             # Initialize Robot Parameters 
             self.ability_duration = 60    # seconds
             self.battery = 100            # initial battery level
+            self.close2charger = False
             self.endgame = False
             self.health_level=sim.getNamedInt32Param("health_"+self.alias)
             # Hammer
-            self.hammerEnabled = False
+            self.hammerEnabled = self.sceneData["Robots"][self.alias]["Skill"].get("Hammer")
             self.hammerStartTime = None
             self.hammerUsed = None
             self.close2oponent= False
             sim.setObjectInt32Param(sim.getObject(f"/{self.alias}/Hammer"),sim.objintparam_visibility_layer,0)
             # Shield
-            self.shieldEnabled = False
+            self.shieldEnabled = self.sceneData["Robots"][self.alias]["Skill"].get("Shield")
             self.shieldStartTime= None
             sim.setObjectInt32Param(sim.getObject(f"/{self.alias}/Shield"),sim.objintparam_visibility_layer,0)
             # Fast Hokuyo
@@ -276,169 +284,179 @@ def robot_thread(name,fovmat):
             self.visionSensors=[sim.getObject("./sensor1"),sim.getObject("./sensor2")]
     
             # La parte de colecciones no la entiendo bien
-            '''
-            local collection=sim.createCollection(0)
-            sim.addItemToCollection(collection,sim.handle_all,-1,0)
-            sim.addItemToCollection(collection,sim.handle_tree,self,1)
-            self.shield=sim.getObject("../../Shield")
-            sim.addItemToCollection(collection,sim.handle_single,shield,1)
-  
-            hammer=sim.getObject("../../Hammer")
-            sim.addItemToCollection(collection,sim.handle_single,hammer,1)
             
+            collection=sim.createCollection(0)
+            sim.addItemToCollection(collection,sim.handle_all,-1,0)
+            sim.addItemToCollection(collection,sim.handle_tree,self.selfsense,1)
+
+            sim.addItemToCollection(collection,sim.handle_single,sim.getObject(f"/{self.alias}/Shield"),1) # Funciona
+
+            sim.addItemToCollection(collection,sim.handle_single,sim.getObject(f"/{self.alias}/Hammer"),1)
+            
+            sim.setObjectInt32Param(self.visionSensors[0],sim.visionintparam_entity_to_render,collection)
             sim.setObjectInt32Param(self.visionSensors[1],sim.visionintparam_entity_to_render,collection)
-            sim.setObjectInt32Param(self.visionSensors[2],sim.visionintparam_entity_to_render,collection)
-            '''
+            
             sim.setObjectFloatParam(self.visionSensors[0],sim.visionfloatparam_far_clipping,self.maxScanDistance)
             sim.setObjectFloatParam(self.visionSensors[1],sim.visionfloatparam_far_clipping,self.maxScanDistance)
+
             self.lines=sim.addDrawingObject(sim.drawing_lines,1,0,-1,1000,laser_color)
 
         def thread(self):
-            self.read_scene_data()
-            #node.get_logger().info(f'Funciona el cmd thread del {name}')
+            if not self.endgame:
+                self.read_scene_data()
+                #node.get_logger().info(f'Funciona el cmd thread del {name}')
 
-            # Actualiza posición
+                # Actualiza posición
 
-            p = sim.getObjectPosition(self.handler,-1)
-            o = sim.getObjectOrientation(self.handler,-1)
-            self.sceneData["Robots"][self.alias]["Pose"]=[p[0],p[1],o[2]]
-            #print (f"[ DEBUG ] Pose : x:{p[0]}  y:{p[1]}  o:{o[2]}") # Funciona
+                p = sim.getObjectPosition(self.handler,-1)
+                o = sim.getObjectOrientation(self.handler,-1)
+                self.sceneData["Robots"][self.alias]["Pose"]=[p[0],p[1],o[2]]
+                    
 
-            # Battery management
+                # Battery management
 
-            battery = self.sceneData["Robots"][self.alias]["Battery"]
-            close2charger= False 
-            for dist in self.fovmat.get(self.alias,{}).get("chargers") :
-                if dist < 0.2:
-                    close2charger=True 
-                    break
-            if close2charger and self.v==0:    # Cerca de un cargador y está parado
-                battery = battery + 1 if (battery+1) < 100 else 100
-            else:
-                if (battery>0.0):
-                    battery = battery - 0.01 - 0.01*(np.abs(self.v)+np.abs(self.w))
-                    battery = 0.0 if battery<=0.0 else battery
-            self.sceneData["Robots"][self.alias]["Battery"]= battery# despues hay que hacer un write
+                self.battery = self.sceneData["Robots"][self.alias]["Battery"]
+                self.close2charger= False 
+                for dist in self.fovmat.get(self.alias,{}).get("chargers") :
+                    if dist < 0.2:
+                        self.close2charger=True 
+                        break
+                if self.close2charger and self.v==0:    # Cerca de un cargador y está parado
+                    self.battery = self.battery + 1 if (self.battery+1) < 100 else 100
+                else:
+                    if (self.battery>0.0):
+                        self.battery = self.battery - 0.01 - 0.01*(np.abs(self.v)+np.abs(self.w))
+                        self.battery = 0.0 if self.battery<=0.0 else self.battery
+                self.sceneData["Robots"][self.alias]["Battery"]= self.battery# despues hay que hacer un write
 
-            if battery < 5:
-                self.v=0.1*self.v
-                self.w=0.1*self.w
-            print (f"[ DEBUG ] Battery : {battery}\t Cerca de cargador : {close2charger}")
-            print(f"[ DEBUG ] Distancias:\n {self.fovmat.get(self.alias,{})}")
+                if self.battery < 5:
+                    self.v=0.1*self.v
+                    self.w=0.1*self.w
+                
+                # cmd_vel to wheel speeds conversion
+                if not(self.w==0):
+                    R=self.v/self.w
+                    vLeft= self.w*(R-distance_between_wheels/2)
+                    vRight=self.w*(R+distance_between_wheels/2)
+                else:
+                    vLeft=self.v
+                    vRight=self.v
+                vLeft= 0.0 if vLeft is None else vLeft
+                vRight= 0.0 if vRight is None else vRight
 
-            #print(f"v:{self.v},w:{self.w}")
-            # cmd_vel to wheel speeds conversion
-            if not(self.w==0):
-                R=self.v/self.w
-                vLeft= self.w*(R-distance_between_wheels/2)
-                vRight=self.w*(R+distance_between_wheels/2)
-            else:
-                vLeft=self.v
-                vRight=self.v
-            vLeft= 0.0 if vLeft is None else vLeft
-            vRight= 0.0 if vRight is None else vRight
+                sim.setJointTargetVelocity(self.motorLeft,vLeft/wheel_radius)
+                sim.setJointTargetVelocity(self.motorRight,vRight/wheel_radius)
 
-            sim.setJointTargetVelocity(self.motorLeft,vLeft/wheel_radius)
-            sim.setJointTargetVelocity(self.motorRight,vRight/wheel_radius)
+                # Health management
 
-            # Health management
+                # puedo hacer que health este en self o que este en sceneData
+                self.health_level=self.sceneData["Robots"][self.alias].get("Health")
+                #self.health_level=0   Funciona
+                
+                if self.health_level <=0 and not self.endgame:
+                    self.v=0
+                    self.w=0
+                    fire = sim.loadModel(sim.getStringParam(sim.stringparam_scene_path)+"/model_fire.ttm")
+                    p_robot = sim.getObjectPosition(self.handler,sim.handle_world)
+                    sim.setObjectPosition(fire,-1,p_robot)
+                    print("GAME OVER for "+self.alias)
+                    self.endgame = True
 
-            # puedo hacer que health este en self o que este en sceneData
-            self.health_level=self.sceneData["Robots"][self.alias].get("Health")
-            #self.health_level=0   Funciona
-            print (f"[ DEBUG ] Health : {self.health_level}")
-            if self.health_level <=0 and not self.endgame:
-                self.v=0
-                self.w=0
-                fire = sim.loadModel(sim.getStringParam(sim.stringparam_scene_path)+"/model_fire.ttm")
-                p_robot = sim.getObjectPosition(self.handler,sim.handle_world)
-                sim.setObjectPosition(fire,-1,p_robot)
-                print("GAME OVER for "+self.alias)
-                self.endgame = True
+                # Lectura Skills
+                
+                # Ver si tiene alguna cerca
+                close2skill=False
+                for index,skill_pos in enumerate(self.fovmat.get(self.alias,{}).get('skills')):
+                    try: 
+                        sim.getObject("/Scene/skill_"+str(index+1))
+                    except Exception:
+                        continue
+                    if skill_pos < 0.5:
+                        name = "skill_"+str(index+1)
+                        close2skill=True
+                        break
+                # Identificar la skill
+                if close2skill:
+                    ability=self.sceneData["Skills"][name].get("ID")
+                    # Eliminar bloque de habilidad 
+                    del self.sceneData["Skills"][name]
+                    sim.removeObject(sim.getObject("/Scene/"+name))
 
-            # Lectura Skills
+                    if ability=="Hammer":
+                        self.hammerStartTime=sim.getSimulationTime()
+                        self.hammerEnabled=True
+                        self.hammerUsed = False
+                        sim.setObjectInt32Param(sim.getObject(f"/{self.alias}/Hammer"),sim.objintparam_visibility_layer,1)
+                        pass
+                    elif ability=="Shield":
+                        self.shieldStartTime=sim.getSimulationTime()
+                        self.shieldEnabled=True
+                        self.sceneData["Robots"][self.alias]["Skill"]["Shield"]=True
+                        sim.setObjectInt32Param(sim.getObject(f"/{self.alias}/Shield"),sim.objintparam_visibility_layer,1)
+                        pass
+                    if self.verbose:
+                        print(f"[ DEBUG ] Habilidad : {ability}")
 
-            # Ver si tiene alguna cerca
-            close2skill=False
-            for index,skill_pos in enumerate(self.fovmat.get(self.alias,{}).get('skills')):
-                try: 
-                    sim.getObject("/Scene/skill_"+str(index+1))
-                except Exception:
-                    continue
-                if skill_pos < 0.5:
-                    name = "skill_"+str(index+1)
-                    close2skill=True
-                    break
-            # Identificar la skill
-            if close2skill:
-                ability=self.sceneData["Skills"][name].get("ID")
-                # Eliminar bloque de habilidad 
-                del self.sceneData["Skills"][name]
-                sim.removeObject(sim.getObject("/Scene/"+name))
-
-                #currentTime= sim.getSimulationTime()
-                if ability=="Hammer":
-                    self.hammerStartTime=sim.getSimulationTime()
-                    self.hammerEnabled=True
-                    self.hammerUsed = False
-                    sim.setObjectInt32Param(sim.getObject(f"/{self.alias}/Hammer"),sim.objintparam_visibility_layer,1)
-                    pass
-                elif ability=="Shield":
-                    #self.Shield(currentTime)
-                    self.shieldStartTime=sim.getSimulationTime()
-                    self.shieldEnabled=True
-                    sim.setObjectInt32Param(sim.getObject(f"/{self.alias}/Shield"),sim.objintparam_visibility_layer,1)
-                    pass
-
-                print(f"[ DEBUG ] Habilidad : {ability}")
-
-            # Shield
-
-            if self.shieldEnabled:
-                if (sim.getSimulationTime()-self.shieldStartTime)>self.ability_duration:
+                # Shield
+                self.shieldEnabled=self.sceneData["Robots"][self.alias]["Skill"]["Shield"]
+                if (self.shieldEnabled and (sim.getSimulationTime()-self.shieldStartTime)>self.ability_duration) or not self.shieldEnabled:
                     self.shieldEnabled=False
                     sim.setObjectInt32Param(sim.getObject(f"/{self.alias}/Shield"),sim.objintparam_visibility_layer,0)
+                self.sceneData["Robots"][self.alias]["Skill"]["Shield"]= self.shieldEnabled
+                
+                # Hammer
 
-            # Hammer
-
-            if self.hammerEnabled:
-                if not self.hammerUsed and (sim.getSimulationTime()-self.hammerStartTime)<self.ability_duration:
-                    # Comprobar si robots cerca
-                    self.close2oponent=False
-                    for i,distance in enumerate(self.fovmat.get(self.alias,{}).get("robots")):
-                        if distance > 0 and distance <0.15:
-                            self.close2oponent=True
-                            oponent= "Robot_"+str(i+1)
-                            break
-                    # Comporbar si tiene escudo
-                    if self.close2oponent:
-                        oponentShield=True# sim.getNamedBoolParam("shield_enabled_"+oponent)
-                        if oponentShield:
-                            self.sceneData["Robots"][oponent]["Health"]-=20
-                        else:
-                            self.sceneData["Robots"][oponent]["Health"]-=100
-                        pass
-                        self.hammerUsed=True
+                if self.hammerEnabled:
+                    if not self.hammerUsed and (sim.getSimulationTime()-self.hammerStartTime)<self.ability_duration:
+                        # Comprobar si robots cerca
+                        self.close2oponent=False
+                        for i,distance in enumerate(self.fovmat.get(self.alias,{}).get("robots")):
+                            if distance > 0 and distance <0.8:
+                                self.close2oponent=True
+                                oponent= "Robot_"+str(i+1)
+                                break
+                        print(f"Close to oponent: {self.close2oponent}\tdistances: {self.fovmat.get(self.alias,{}).get("robots")}")
+                        # Comporbar si tiene escudo
+                        if self.close2oponent:
+                            oponentShield=self.sceneData["Robots"][oponent]["Skill"].get("Shield")
+                            if oponentShield:
+                                self.sceneData["Robots"][oponent]["Health"]-=20
+                                self.sceneData["Robots"][oponent]["Skill"]["Shield"]= False
+                            else:
+                                self.sceneData["Robots"][oponent]["Health"]-=100
+                            pass
+                            self.hammerUsed=True
+                            self.hammerEnabled=False
+                            sim.setObjectInt32Param(sim.getObject(f"/{self.alias}/Hammer"),sim.objintparam_visibility_layer,0)
+                    else:
                         self.hammerEnabled=False
                         sim.setObjectInt32Param(sim.getObject(f"/{self.alias}/Hammer"),sim.objintparam_visibility_layer,0)
-                else:
-                    self.hammerEnabled=False
-                    sim.setObjectInt32Param(sim.getObject(f"/{self.alias}/Hammer"),sim.objintparam_visibility_layer,0)
-            self.write_scene_data()
+                self.sceneData["Robots"][self.alias]["Skill"]["Hammer"]= self.hammerEnabled
+
+                
+                
+                self.write_scene_data()
+
 
         def read_scene_data(self):
             self.sceneData=json.loads(sim.getBufferProperty(sim.handle_scene, "customData.myTag"))
         def write_scene_data(self):
             sim.setBufferProperty(sim.handle_scene, "customData.myTag", json.dumps(self.sceneData))
-            
+
+        def debugging(self):
+            if self.verbose:
+                if not self.endgame:
+                    print (f"[ DEBUG {self.alias} ] Pose : {self.sceneData["Robots"][self.alias]["Pose"]}") # Funciona
+                    print (f"[ DEBUG {self.alias} ] Battery : {self.battery}\t Cerca de cargador : {self.close2charger}")
+                    print (f"[ DEBUG {self.alias} ] Skill : {self.sceneData["Robots"][self.alias]["Skill"]}")
+                    print (f"[ DEBUG {self.alias} ] v:{self.v},w:{self.w}")
+                    print (f"[ DEBUG {self.alias} ] Health : {self.health_level}")   
+                else:
+                    print("GAME OVER for "+self.alias)
+                    
         def cmd_callback (self,msg):
-            #node.get_logger().info(f'Funciona el cmd callback de {name}')
-            '''
-            sim.setNamedFloatParam('cmd_vel_v_'+self.alias,msg.linear.x)
-            sim.setNamedFloataram('cmd_vel_w_'+self.alias,msg.angular.z)
-            '''
-            self.v=1
-            self.w=1
+            self.v=msg.linear.x
+            self.w=msg.angular.z
             pass
 
         def sensing(self):
@@ -482,31 +500,31 @@ def robot_thread(name,fovmat):
                                     p_sensor = multiply_vector(sensorM, v)
                                     t[3], t[4], t[5] = p_sensor[0], p_sensor[1], p_sensor[2]
                                     sim.addDrawingObjectItem(self.lines, t)
-
-            #print(f"[ SENSING ] Measured Data : {self.measuredData}") # Funciona
             self.pub_laser()
 
             pass        
 
         def pub_laser(self):
             if self.measuredData:
-                msg = {
-                    'header': {
-                        'stamp': sim.getSimulationTime(), # estaba simROS2 en vez de sim
-                        'frame_id': '/' + self.alias + '/laser_scan'
-                    },
-                    'angle_min': -120 * np.pi / 180,
-                    'angle_max': 120 * np.pi / 180,
-                    'angle_increment': (240 / 683) * np.pi / 180,
-                    'time_increment': 0,
-                    'scan_time': sim.getSimulationTimeStep(),
-                    'range_min': 0.001,
-                    'range_max': self.maxScanDistance,
-                    'ranges': self.measuredData,
-                    'intensities': []
-                }
-            print(f"[ PUBLISH ] msg:{msg}")
-            self.laser_publisher.publish(msg) # Entiendo que aqui de error por el tipo de dato del publish
+                scan_msg=LaserScan()
+                scan_msg.header = Header()
+                scan_msg.header.stamp = node.get_clock().now().to_msg()  # si usas rclpy
+                scan_msg.header.frame_id = f"/{self.alias}/laser_scan"
+
+                scan_msg.angle_min = -120 * np.pi / 180
+                scan_msg.angle_max = 120 * np.pi / 180
+                scan_msg.angle_increment = (240 / 683) * np.pi / 180  # 684 puntos totales
+
+                scan_msg.time_increment = 0.0
+                scan_msg.scan_time = sim.getSimulationTimeStep()
+                scan_msg.range_min = 0.001
+                scan_msg.range_max = float(self.maxScanDistance)
+
+                # Asignar datos reales
+                scan_msg.ranges = [float(r) for r in self.measuredData]
+            if verbose:
+                print(f"[ PUBLISH ] msg:{scan_msg}")
+            self.laser_publisher.publish(scan_msg) # Funciona
             pass
     node = RobotNode(fovmat)
     node.get_logger().info(f'Estas lanzando el robot thread de {name}')
