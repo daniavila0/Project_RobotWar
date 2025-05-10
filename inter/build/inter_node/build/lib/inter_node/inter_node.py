@@ -93,7 +93,7 @@ class Broker (Node):
         #p[2]= 0
         sim.setObjectPosition(robot,-1,p)
         sim.setObjectOrientation(robot,-1,o)
-        self.sceneData["Robots"][alias]={"Battery": 100,"Pose":[p[0],p[1],o[2]],"Health": 100,"Skill":{"Hammer":False,"Shield":False}} 
+        self.sceneData["Robots"][alias]={"Nickname": str(msg.data),"Battery": 100,"Pose":[p[0],p[1],o[2]],"Health": 100,"Skill":{"Hammer":False,"Shield":False}} 
                                          
         
         simple_scene_data = copy.deepcopy(self.sceneData)
@@ -215,6 +215,7 @@ def robot_thread(name,fovmat):
             self.handler=sim.getObject(f'/{name}')
             self.alias=sim.getObjectAlias(self.handler)
             self.sceneData=json.loads(sim.getBufferProperty(sim.handle_scene, "customData.myTag"))
+            self.nickname = self.sceneData["Robots"][self.alias].get("Nickname")
             self.verbose=True
             ### IMPORTANTE 
             # El fovmat del robot solo lee su parte
@@ -359,7 +360,7 @@ def robot_thread(name,fovmat):
                     fire = sim.loadModel(sim.getStringParam(sim.stringparam_scene_path)+"/model_fire.ttm")
                     p_robot = sim.getObjectPosition(self.handler,sim.handle_world)
                     sim.setObjectPosition(fire,-1,p_robot)
-                    print("GAME OVER for "+self.alias)
+                    print("GAME OVER for "+self.nickname)
                     self.endgame = True
 
                 # Lectura Skills
@@ -446,13 +447,13 @@ def robot_thread(name,fovmat):
         def debugging(self):
             if self.verbose:
                 if not self.endgame:
-                    print (f"[ DEBUG {self.alias} ] Pose : {self.sceneData["Robots"][self.alias]["Pose"]}") # Funciona
-                    print (f"[ DEBUG {self.alias} ] Battery : {self.battery}\t Cerca de cargador : {self.close2charger}")
-                    print (f"[ DEBUG {self.alias} ] Skill : {self.sceneData["Robots"][self.alias]["Skill"]}")
-                    print (f"[ DEBUG {self.alias} ] v:{self.v},w:{self.w}")
-                    print (f"[ DEBUG {self.alias} ] Health : {self.health_level}")   
+                    print (f"[ DEBUG {self.nickname} ] Pose : {self.sceneData["Robots"][self.alias]["Pose"]}") # Funciona
+                    print (f"[ DEBUG {self.nickname} ] Battery : {self.battery}\t Cerca de cargador : {self.close2charger}")
+                    print (f"[ DEBUG {self.nickname} ] Skill : {self.sceneData["Robots"][self.alias]["Skill"]}")
+                    print (f"[ DEBUG {self.nickname} ] v:{self.v},w:{self.w}")
+                    print (f"[ DEBUG {self.nickname} ] Health : {self.health_level}")   
                 else:
-                    print("GAME OVER for "+self.alias)
+                    print("GAME OVER for "+self.nickname)
                     
         def cmd_callback (self,msg):
             self.v=msg.linear.x
