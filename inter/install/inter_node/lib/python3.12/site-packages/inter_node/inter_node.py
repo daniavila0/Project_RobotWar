@@ -50,12 +50,15 @@ class Broker (Node):
         # VARS
         self.n_robots=0
         self.handlers=[]
-        self.sceneData = json.loads(sim.getBufferProperty(sim.handle_scene, "customData.myTag"))#multiprocessing.Manager().dict()
+
+        self.sceneData = json.loads(sim.getBufferProperty(sim.handle_scene, "customData.myTag"))
+        
         # Este loads va bien
         # Calculate FOV
         self.fovmat=fovmat
-        self.timer = self.create_timer(1, self.calculateFOV)
-        self.timerRead = self.create_timer(1,self.read_scene_data)
+        self.timer = self.create_timer(0.5, self.calculateFOV)
+        self.timerpub=self.create_timer(3,self.publish_scene_data)
+        self.timerRead = self.create_timer(0.5,self.read_scene_data)
         self.processes=[]
         
 
@@ -87,18 +90,57 @@ class Broker (Node):
         o = sim.getObjectOrientation(robot,-1)
         
         while (not valid_pose(p[:2],poses)):
-                p[0]=np.random.rand()*10-5
-                p[1]=np.random.rand()*10-5
+                p[0]=np.random.rand()*12-6
+                p[1]=np.random.rand()*12-6
                 o[2]= o[2]+np.pi/2
         #p[2]= 0
         sim.setObjectPosition(robot,-1,p)
         sim.setObjectOrientation(robot,-1,o)
         self.sceneData["Robots"][alias]={"Nickname": str(msg.data),"Battery": 100,"Pose":[p[0],p[1],o[2]],"Health": 100,"Skill":{"Hammer":False,"Shield":False}} 
                                          
-        
+        '''
+        {
+        "Robots": {
+            "Robot_1": {
+            "Nickname": "nickname",
+            "Battery": 100,
+            "Pose": [x, y, o],
+            "Health": 100,
+            "Skill": {
+                "Hammer": false,
+                "Shield": false
+            }
+            },
+            "Robot_2": {}
+        },
+        "Obstacles": {
+            "obstacle_1": {
+            "Pose": [x, y]
+            },
+            "obstacle_2": {}
+        },
+        "Chargers": {
+            "charger_1": {
+            "Pose": [x, y]
+            },
+            "charger_2": {}
+        },
+        "Skills": {
+            "skill_1": {
+            "Pose": [x, y],
+            "Skill": "skill_name"
+            },
+            "skill_2": {}
+        }
+        }
+        '''
         simple_scene_data = copy.deepcopy(self.sceneData)
         #print(simple_scene_data)
+
+
         sim.setBufferProperty(sim.handle_scene, "customData.myTag", json.dumps(simple_scene_data))
+
+
 
         # Es necesario tener el fov con nuestro robot antes de llamarlo, aparte del temporizador
         self.calculateFOV()
@@ -127,7 +169,11 @@ class Broker (Node):
     def read_scene_data(self):
         self.sceneData = json.loads(sim.getBufferProperty(sim.handle_scene, "customData.myTag"))
         
-    
+    def publish_scene_data (self):
+        msg = String()
+        msg.data=json.dumps(self.sceneData)
+        self.publisher_.publish(msg)
+        
     def calculateFOV(self): # Aqui no se si se estan actualizando
         if self.sceneData:
             scene_copy = copy.deepcopy(self.sceneData)
@@ -167,7 +213,9 @@ def Fov_array(sceneData,fovmat):
         for name, positions in [("chargers", chargers_pos), ("skills", skills_pos), ("obstacles", obstacles_pos)]:
             dist_list = []
             for obj_pos in positions:
+
                 d = np.linalg.norm(pos - obj_pos)
+                
                 dist_list.append(d)
             fovcopy[alias][name] = dist_list
     fovmat.clear()
@@ -233,7 +281,7 @@ def robot_thread(name,fovmat):
             # Se lee    self.fovmat.get(self.alias, {})
             # Publicadores y Subsciptores
             self.subscriber_vel = self.create_subscription(Twist,'/control_'+self.alias+'/cmdvel',self.cmd_callback,3)
-            self.laser_publisher = self.create_publisher(LaserScan, f'/{self.alias}/laser_scan', 10)
+            self.laser_publisher = self.create_publisher(LaserScan, f'/sensor_{self.alias}/laser_scan', 10)
             # Timer 
             self.timerThread = self.create_timer(1, self.thread)
             self.timerSensing=self.create_timer(15,self.sensing)

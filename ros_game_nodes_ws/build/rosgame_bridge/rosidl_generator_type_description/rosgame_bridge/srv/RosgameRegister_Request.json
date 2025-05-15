@@ -1,0 +1,26 @@
+{
+  "type_description_msg": {
+    "type_description": {
+      "type_name": "rosgame_bridge/srv/RosgameRegister_Request",
+      "fields": [
+        {
+          "name": "username",
+          "type": {
+            "type_id": 17,
+            "capacity": 0,
+            "string_capacity": 0,
+            "nested_type_name": ""
+          },
+          "default_value": ""
+        }
+      ]
+    },
+    "referenced_type_descriptions": []
+  },
+  "type_hashes": [
+    {
+      "type_name": "rosgame_bridge/srv/RosgameRegister_Request",
+      "hash_string": "RIHS01_e2625d14017f0e36251c8d279f232bc702059159d991a169eab9bcdcc211b895"
+    }
+  ]
+}

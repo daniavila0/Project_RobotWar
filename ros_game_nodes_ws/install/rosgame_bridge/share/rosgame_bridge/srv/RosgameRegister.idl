@@ -1,0 +1,15 @@
+// generated from rosidl_adapter/resource/srv.idl.em
+// with input from rosgame_bridge/srv/RosgameRegister.srv
+// generated code does not contain a copyright notice
+
+
+module rosgame_bridge {
+  module srv {
+    struct RosgameRegister_Request {
+      string username;
+    };
+    struct RosgameRegister_Response {
+      string robot_name;
+    };
+  };
+};

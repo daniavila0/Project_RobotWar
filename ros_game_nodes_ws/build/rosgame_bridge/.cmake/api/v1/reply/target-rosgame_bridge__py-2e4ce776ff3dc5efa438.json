@@ -1,0 +1,79 @@
+{
+	"backtrace" : 1,
+	"backtraceGraph" : 
+	{
+		"commands" : 
+		[
+			"add_custom_target"
+		],
+		"files" : 
+		[
+			"/home/daniel/Documentos/Project_ws/ros_game_nodes_ws/build/rosgame_bridge/rosgame_bridge__py/CMakeLists.txt"
+		],
+		"nodes" : 
+		[
+			{
+				"file" : 0
+			},
+			{
+				"command" : 0,
+				"file" : 0,
+				"line" : 36,
+				"parent" : 0
+			}
+		]
+	},
+	"dependencies" : 
+	[
+		{
+			"id" : "rosgame_bridge::@6890427a1f51a3e7e1df"
+		}
+	],
+	"id" : "rosgame_bridge__py::@93d66a35346340be8566",
+	"name" : "rosgame_bridge__py",
+	"paths" : 
+	{
+		"build" : "rosgame_bridge__py",
+		"source" : "/home/daniel/Documentos/Project_ws/ros_game_nodes_ws/build/rosgame_bridge/rosgame_bridge__py"
+	},
+	"sourceGroups" : 
+	[
+		{
+			"name" : "",
+			"sourceIndexes" : 
+			[
+				0
+			]
+		},
+		{
+			"name" : "CMake Rules",
+			"sourceIndexes" : 
+			[
+				1,
+				2
+			]
+		}
+	],
+	"sources" : 
+	[
+		{
+			"backtrace" : 1,
+			"isGenerated" : true,
+			"path" : "/home/daniel/Documentos/Project_ws/ros_game_nodes_ws/build/rosgame_bridge/rosgame_bridge__py/CMakeFiles/rosgame_bridge__py",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 0,
+			"isGenerated" : true,
+			"path" : "/home/daniel/Documentos/Project_ws/ros_game_nodes_ws/build/rosgame_bridge/rosgame_bridge__py/CMakeFiles/rosgame_bridge__py.rule",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 0,
+			"isGenerated" : true,
+			"path" : "/home/daniel/Documentos/Project_ws/ros_game_nodes_ws/build/rosgame_bridge/rosidl_generator_py/rosgame_bridge/_rosgame_bridge_s.ep.rosidl_typesupport_fastrtps_c.c.rule",
+			"sourceGroupIndex" : 1
+		}
+	],
+	"type" : "UTILITY"
+}

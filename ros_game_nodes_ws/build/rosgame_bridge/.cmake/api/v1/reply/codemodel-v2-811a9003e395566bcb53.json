@@ -1,0 +1,251 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"childIndexes" : 
+					[
+						1
+					],
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-.-6d62a37781c3751bedff.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.20"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4,
+						6,
+						7,
+						8,
+						9,
+						10,
+						11,
+						12,
+						13,
+						14,
+						15,
+						16,
+						17,
+						18,
+						19
+					]
+				},
+				{
+					"build" : "rosgame_bridge__py",
+					"jsonFile" : "directory-rosgame_bridge__py-1c92fad625869d441817.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.20"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 0,
+					"source" : "/home/daniel/Documentos/Project_ws/ros_game_nodes_ws/build/rosgame_bridge/rosgame_bridge__py",
+					"targetIndexes" : 
+					[
+						5
+					]
+				}
+			],
+			"name" : "",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0,
+						1
+					],
+					"name" : "rosgame_bridge",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4,
+						5,
+						6,
+						7,
+						8,
+						9,
+						10,
+						11,
+						12,
+						13,
+						14,
+						15,
+						16,
+						17,
+						18,
+						19
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "ament_cmake_python_build_rosgame_bridge_egg::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ament_cmake_python_build_rosgame_bridge_egg-3214712c8a431cbded88.json",
+					"name" : "ament_cmake_python_build_rosgame_bridge_egg",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ament_cmake_python_copy_rosgame_bridge::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ament_cmake_python_copy_rosgame_bridge-9742897597c5cd6088c9.json",
+					"name" : "ament_cmake_python_copy_rosgame_bridge",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "bridge::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-bridge-ef3b5f9c0f730f479e29.json",
+					"name" : "bridge",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "rosgame_bridge::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-rosgame_bridge-504397aa5f65c91f7868.json",
+					"name" : "rosgame_bridge",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "rosgame_bridge__cpp::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-rosgame_bridge__cpp-b41e653f23913dc8e241.json",
+					"name" : "rosgame_bridge__cpp",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "rosgame_bridge__py::@93d66a35346340be8566",
+					"jsonFile" : "target-rosgame_bridge__py-2e4ce776ff3dc5efa438.json",
+					"name" : "rosgame_bridge__py",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "rosgame_bridge__rosidl_generator_c::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-rosgame_bridge__rosidl_generator_c-5a9464ed2807873e2379.json",
+					"name" : "rosgame_bridge__rosidl_generator_c",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "rosgame_bridge__rosidl_generator_py::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-rosgame_bridge__rosidl_generator_py-15731bd2d2382238dee2.json",
+					"name" : "rosgame_bridge__rosidl_generator_py",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "rosgame_bridge__rosidl_generator_type_description::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-rosgame_bridge__rosidl_generator_type_description-d21611be0db98e42e85f.json",
+					"name" : "rosgame_bridge__rosidl_generator_type_description",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "rosgame_bridge__rosidl_typesupport_c::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-rosgame_bridge__rosidl_typesupport_c-43e66f5fc92085380e57.json",
+					"name" : "rosgame_bridge__rosidl_typesupport_c",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "rosgame_bridge__rosidl_typesupport_cpp::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-rosgame_bridge__rosidl_typesupport_cpp-81a6bf05c3ac6c4ad8e1.json",
+					"name" : "rosgame_bridge__rosidl_typesupport_cpp",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "rosgame_bridge__rosidl_typesupport_fastrtps_c::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-rosgame_bridge__rosidl_typesupport_fastrtps_c-d000e0a18eafc5dfdfcd.json",
+					"name" : "rosgame_bridge__rosidl_typesupport_fastrtps_c",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "rosgame_bridge__rosidl_typesupport_fastrtps_cpp::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-rosgame_bridge__rosidl_typesupport_fastrtps_cpp-4777c73bf764a2dabf6a.json",
+					"name" : "rosgame_bridge__rosidl_typesupport_fastrtps_cpp",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "rosgame_bridge__rosidl_typesupport_introspection_c::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-rosgame_bridge__rosidl_typesupport_introspection_c-c6a3616b8ea3a02a4a1e.json",
+					"name" : "rosgame_bridge__rosidl_typesupport_introspection_c",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "rosgame_bridge__rosidl_typesupport_introspection_cpp::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-rosgame_bridge__rosidl_typesupport_introspection_cpp-24fa76b411c62800640c.json",
+					"name" : "rosgame_bridge__rosidl_typesupport_introspection_cpp",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "rosgame_bridge_s__rosidl_typesupport_c::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-rosgame_bridge_s__rosidl_typesupport_c-156777e8e76abe7abc3f.json",
+					"name" : "rosgame_bridge_s__rosidl_typesupport_c",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "rosgame_bridge_s__rosidl_typesupport_fastrtps_c::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-rosgame_bridge_s__rosidl_typesupport_fastrtps_c-e77070048f7f6c513688.json",
+					"name" : "rosgame_bridge_s__rosidl_typesupport_fastrtps_c",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "rosgame_bridge_s__rosidl_typesupport_introspection_c::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-rosgame_bridge_s__rosidl_typesupport_introspection_c-98f20e2bf008f5c87e0a.json",
+					"name" : "rosgame_bridge_s__rosidl_typesupport_introspection_c",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "rosgame_bridge_uninstall::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-rosgame_bridge_uninstall-ffc8933ae71316a953f0.json",
+					"name" : "rosgame_bridge_uninstall",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "uninstall::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-uninstall-20709a67bfc47bf71b14.json",
+					"name" : "uninstall",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "/home/daniel/Documentos/Project_ws/ros_game_nodes_ws/build/rosgame_bridge",
+		"source" : "/home/daniel/Documentos/Project_ws/ros_game_nodes_ws/src/Bridge_Node"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 6
+	}
+}

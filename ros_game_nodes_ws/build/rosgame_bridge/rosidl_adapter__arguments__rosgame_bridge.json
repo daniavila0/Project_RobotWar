@@ -1,0 +1,6 @@
+{
+  "package_name": "rosgame_bridge",
+  "non_idl_tuples": [
+    "/home/daniel/Documentos/Project_ws/ros_game_nodes_ws/src/Bridge_Node:srv/RosgameRegister.srv"
+  ]
+}

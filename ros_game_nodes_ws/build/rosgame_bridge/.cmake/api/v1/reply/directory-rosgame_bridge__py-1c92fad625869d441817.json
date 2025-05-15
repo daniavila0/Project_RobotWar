@@ -1,0 +1,14 @@
+{
+	"backtraceGraph" : 
+	{
+		"commands" : [],
+		"files" : [],
+		"nodes" : []
+	},
+	"installers" : [],
+	"paths" : 
+	{
+		"build" : "rosgame_bridge__py",
+		"source" : "/home/daniel/Documentos/Project_ws/ros_game_nodes_ws/build/rosgame_bridge/rosgame_bridge__py"
+	}
+}

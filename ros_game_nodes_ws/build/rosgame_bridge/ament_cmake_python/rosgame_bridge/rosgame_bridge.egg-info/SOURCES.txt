@@ -1,0 +1,8 @@
+setup.py
+rosgame_bridge/__init__.py
+rosgame_bridge.egg-info/PKG-INFO
+rosgame_bridge.egg-info/SOURCES.txt
+rosgame_bridge.egg-info/dependency_links.txt
+rosgame_bridge.egg-info/top_level.txt
+rosgame_bridge/srv/__init__.py
+rosgame_bridge/srv/_rosgame_register.py

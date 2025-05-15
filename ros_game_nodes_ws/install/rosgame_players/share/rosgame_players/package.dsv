@@ -1,0 +1,8 @@
+source;share/rosgame_players/hook/cmake_prefix_path.ps1
+source;share/rosgame_players/hook/cmake_prefix_path.dsv
+source;share/rosgame_players/hook/cmake_prefix_path.sh
+source;share/rosgame_players/local_setup.bash
+source;share/rosgame_players/local_setup.dsv
+source;share/rosgame_players/local_setup.ps1
+source;share/rosgame_players/local_setup.sh
+source;share/rosgame_players/local_setup.zsh

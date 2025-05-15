@@ -1,0 +1,44 @@
+{
+  "package_name": "rosgame_bridge",
+  "output_dir": "/home/daniel/Documentos/Project_ws/ros_game_nodes_ws/build/rosgame_bridge/rosidl_generator_c/rosgame_bridge",
+  "template_dir": "/opt/ros/rolling/share/rosidl_generator_c/cmake/../resource",
+  "idl_tuples": [
+    "/home/daniel/Documentos/Project_ws/ros_game_nodes_ws/build/rosgame_bridge/rosidl_adapter/rosgame_bridge:srv/RosgameRegister.idl"
+  ],
+  "ros_interface_files": [
+    "/home/daniel/Documentos/Project_ws/ros_game_nodes_ws/src/Bridge_Node/srv/RosgameRegister.srv"
+  ],
+  "ros_interface_dependencies": [
+    "service_msgs:/opt/ros/rolling/share/service_msgs/msg/ServiceEventInfo.idl",
+    "builtin_interfaces:/opt/ros/rolling/share/builtin_interfaces/msg/Duration.idl",
+    "builtin_interfaces:/opt/ros/rolling/share/builtin_interfaces/msg/Time.idl"
+  ],
+  "target_dependencies": [
+    "/opt/ros/rolling/share/rosidl_generator_c/cmake/../../../lib/rosidl_generator_c/rosidl_generator_c",
+    "/opt/ros/rolling/share/rosidl_generator_c/cmake/../../../lib/python3.12/site-packages/rosidl_generator_c/__init__.py",
+    "/opt/ros/rolling/share/rosidl_generator_c/cmake/../resource/action__type_support.h.em",
+    "/opt/ros/rolling/share/rosidl_generator_c/cmake/../resource/action__type_support.c.em",
+    "/opt/ros/rolling/share/rosidl_generator_c/cmake/../resource/empty__description.c.em",
+    "/opt/ros/rolling/share/rosidl_generator_c/cmake/../resource/full__description.c.em",
+    "/opt/ros/rolling/share/rosidl_generator_c/cmake/../resource/idl.h.em",
+    "/opt/ros/rolling/share/rosidl_generator_c/cmake/../resource/idl__description.c.em",
+    "/opt/ros/rolling/share/rosidl_generator_c/cmake/../resource/idl__functions.c.em",
+    "/opt/ros/rolling/share/rosidl_generator_c/cmake/../resource/idl__functions.h.em",
+    "/opt/ros/rolling/share/rosidl_generator_c/cmake/../resource/idl__struct.h.em",
+    "/opt/ros/rolling/share/rosidl_generator_c/cmake/../resource/idl__type_support.c.em",
+    "/opt/ros/rolling/share/rosidl_generator_c/cmake/../resource/idl__type_support.h.em",
+    "/opt/ros/rolling/share/rosidl_generator_c/cmake/../resource/msg__functions.c.em",
+    "/opt/ros/rolling/share/rosidl_generator_c/cmake/../resource/msg__functions.h.em",
+    "/opt/ros/rolling/share/rosidl_generator_c/cmake/../resource/msg__struct.h.em",
+    "/opt/ros/rolling/share/rosidl_generator_c/cmake/../resource/msg__type_support.h.em",
+    "/opt/ros/rolling/share/rosidl_generator_c/cmake/../resource/srv__type_support.c.em",
+    "/opt/ros/rolling/share/rosidl_generator_c/cmake/../resource/srv__type_support.h.em",
+    "/home/daniel/Documentos/Project_ws/ros_game_nodes_ws/build/rosgame_bridge/rosidl_adapter/rosgame_bridge/srv/RosgameRegister.idl",
+    "/opt/ros/rolling/share/service_msgs/msg/ServiceEventInfo.idl",
+    "/opt/ros/rolling/share/builtin_interfaces/msg/Duration.idl",
+    "/opt/ros/rolling/share/builtin_interfaces/msg/Time.idl"
+  ],
+  "type_description_tuples": [
+    "srv/RosgameRegister.idl:/home/daniel/Documentos/Project_ws/ros_game_nodes_ws/build/rosgame_bridge/rosidl_generator_type_description/rosgame_bridge/srv/RosgameRegister.json"
+  ]
+}
