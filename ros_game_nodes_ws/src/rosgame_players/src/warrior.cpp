@@ -7,7 +7,8 @@
 
 Warrior::Warrior(): Node ("robot_warrior")
 {
-    warrior_nick = "UsuarioRosgame";
+    this->declare_parameter<std::string>("name", "warrior_n");
+    warrior_nick = this->get_parameter("name").as_string();;
     int cont = 0;
 
     // Se crea un cliente de servicio y una solicitud para lanzar el servicio.

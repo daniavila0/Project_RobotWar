@@ -217,7 +217,7 @@ void Bridge::scene_info_exchange(const std_msgs::msg::String::SharedPtr &msg,con
     Json::parseFromStream(reader, jsonStream, &JsonSceneData, nullptr);
 
     // Descomentar para mostar la información de la escena en el terminal.
-     RCLCPP_INFO(this->get_logger(), "Msg: '%s'", msg->data.c_str());
+    //RCLCPP_INFO(this->get_logger(), "Msg: '%s'", msg->data.c_str());
 
     // Se obtiene el nombre del topic a partir de la clave "Topic".
     // Get the value associated to the "Topic" key.

@@ -8,7 +8,8 @@ def generate_launch_description():
     #namespace='Broker',
     executable='broker',
     name='Broker',
-    output='screen',# muestra la salida en consola
+    arguments=['--ros-args', '--enclave', '/bridge'],
+    output='screen'# muestra la salida en consola
     #parameters, interesante
 
     ),
@@ -18,26 +19,5 @@ def generate_launch_description():
     executable='bridge',
     name='Bridge',
     arguments=['--ros-args', '--enclave', '/bridge']
-    ),
-    Node(
-    package='rosgame_player',
-    #namespace='e1',
-    executable='elusive_player',
-    name='elusive_player_1',
-    arguments=['--ros-args', '--enclave', '/player']
-    ),
-    Node(
-    package='rosgame_player',
-    #namespace='e2',
-    executable='elusive_player',
-    name='elusive_player_2',
-    arguments=['--ros-args', '--enclave', '/player']
-    ),
-    Node(
-    package='rosgame_player',
-    #namespace='e3',   esto funciona como los dominios para que no se pisen
-    executable='elusive_player',
-    name='elusive_player_3',
-    arguments=['--ros-args', '--enclave', '/player']
     ),
    ])

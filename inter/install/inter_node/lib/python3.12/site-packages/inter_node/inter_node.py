@@ -56,9 +56,9 @@ class Broker (Node):
         # Este loads va bien
         # Calculate FOV
         self.fovmat=fovmat
-        self.timer = self.create_timer(0.5, self.calculateFOV)
-        self.timerpub=self.create_timer(3,self.publish_scene_data)
-        self.timerRead = self.create_timer(0.5,self.read_scene_data)
+        self.timer = self.create_timer(0.3, self.calculateFOV)
+        self.timerpub=self.create_timer(0.3,self.publish_scene_data)
+        self.timerRead = self.create_timer(0.3,self.read_scene_data)
         self.processes=[]
         
 
@@ -146,9 +146,9 @@ class Broker (Node):
         self.calculateFOV()
 
         #MULTIPROCESSING
-        p=multiprocessing.Process(target=robot_thread,args=["Robot_"+str(self.n_robots),self.fovmat]) #argumento es el handler
-        p.start()
-        self.processes.append(p) #Crear una lista de procesos es importante
+        proc=multiprocessing.Process(target=robot_thread,args=["Robot_"+str(self.n_robots),self.fovmat]) #argumento es el handler
+        proc.start()
+        self.processes.append(proc) #Crear una lista de procesos es importante
         
         
         
@@ -283,7 +283,7 @@ def robot_thread(name,fovmat):
             self.subscriber_vel = self.create_subscription(Twist,'/control_'+self.alias+'/cmdvel',self.cmd_callback,3)
             self.laser_publisher = self.create_publisher(LaserScan, f'/sensor_{self.alias}/laser_scan', 10)
             # Timer 
-            self.timerThread = self.create_timer(1, self.thread)
+            self.timerThread = self.create_timer(0.3, self.thread)
             self.timerSensing=self.create_timer(15,self.sensing)
             self.timerDebug=self.create_timer(10,self.debugging)
             '''
@@ -426,6 +426,8 @@ def robot_thread(name,fovmat):
                         break
                 # Identificar la skill
                 if close2skill:
+                    skill_data=self.sceneData["Skills"][name]
+                    #if skill_data:
                     ability=self.sceneData["Skills"][name].get("ID")
                     # Eliminar bloque de habilidad 
                     del self.sceneData["Skills"][name]
@@ -448,7 +450,7 @@ def robot_thread(name,fovmat):
 
                 # Shield
                 self.shieldEnabled=self.sceneData["Robots"][self.alias]["Skill"]["Shield"]
-                if (self.shieldEnabled and (sim.getSimulationTime()-self.shieldStartTime)>self.ability_duration) or not self.shieldEnabled:
+                if (self.shieldEnabled and (sim.getSimulationTime()-self.shieldStartTime)>self.ability_duration):
                     self.shieldEnabled=False
                     sim.setObjectInt32Param(sim.getObject(f"/{self.alias}/Shield"),sim.objintparam_visibility_layer,0)
                 self.sceneData["Robots"][self.alias]["Skill"]["Shield"]= self.shieldEnabled
@@ -456,7 +458,8 @@ def robot_thread(name,fovmat):
                 # Hammer
 
                 if self.hammerEnabled:
-                    if not self.hammerUsed and (sim.getSimulationTime()-self.hammerStartTime)<self.ability_duration:
+                    active_time = sim.getSimulationTime() - self.hammerStartTime
+                    if not self.hammerUsed and active_time<self.ability_duration:
                         # Comprobar si robots cerca
                         self.close2oponent=False
                         for i,distance in enumerate(self.fovmat.get(self.alias,{}).get("robots")):
@@ -464,7 +467,7 @@ def robot_thread(name,fovmat):
                                 self.close2oponent=True
                                 oponent= "Robot_"+str(i+1)
                                 break
-                        print(f"Close to oponent: {self.close2oponent}\tdistances: {self.fovmat.get(self.alias,{}).get("robots")}")
+                        #print(f"Close to oponent: {self.close2oponent}\tdistances: {self.fovmat.get(self.alias,{}).get("robots")}")
                         # Comporbar si tiene escudo
                         if self.close2oponent:
                             oponentShield=self.sceneData["Robots"][oponent]["Skill"].get("Shield")
@@ -476,8 +479,8 @@ def robot_thread(name,fovmat):
                             pass
                             self.hammerUsed=True
                             self.hammerEnabled=False
-                            sim.setObjectInt32Param(sim.getObject(f"/{self.alias}/Hammer"),sim.objintparam_visibility_layer,0)
-                    else:
+                            
+                    if self.hammerUsed or active_time>=self.ability_duration:
                         self.hammerEnabled=False
                         sim.setObjectInt32Param(sim.getObject(f"/{self.alias}/Hammer"),sim.objintparam_visibility_layer,0)
                 self.sceneData["Robots"][self.alias]["Skill"]["Hammer"]= self.hammerEnabled

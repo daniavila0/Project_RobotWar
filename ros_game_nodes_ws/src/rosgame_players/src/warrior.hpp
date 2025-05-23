@@ -52,7 +52,7 @@ private:
     bool autopilot_enabled = false, hammer_enabled = false, shield_enabled = false;
     
     //Id code for our robot. 
-
+    
     std::string warrior_nick ="";
     
     // Información de la escena.
