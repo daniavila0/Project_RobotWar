@@ -21,7 +21,8 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'broker = inter_node.inter_node:main'
+            'broker = inter_node.inter_node:main',
+            'broker_v2=inter_node.inter_node_v2:main'
             #name = pkg_name.file_name:main
         ],
     },
