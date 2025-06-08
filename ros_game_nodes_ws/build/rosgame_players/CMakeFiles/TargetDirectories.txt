@@ -1,6 +1,8 @@
 /home/daniel/Documentos/Project_ws/ros_game_nodes_ws/build/rosgame_players/CMakeFiles/uninstall.dir
 /home/daniel/Documentos/Project_ws/ros_game_nodes_ws/build/rosgame_players/CMakeFiles/rosgame_players_uninstall.dir
 /home/daniel/Documentos/Project_ws/ros_game_nodes_ws/build/rosgame_players/CMakeFiles/warrior_player.dir
+/home/daniel/Documentos/Project_ws/ros_game_nodes_ws/build/rosgame_players/CMakeFiles/elusive_player.dir
+/home/daniel/Documentos/Project_ws/ros_game_nodes_ws/build/rosgame_players/CMakeFiles/pacific_player.dir
 /home/daniel/Documentos/Project_ws/ros_game_nodes_ws/build/rosgame_players/CMakeFiles/test.dir
 /home/daniel/Documentos/Project_ws/ros_game_nodes_ws/build/rosgame_players/CMakeFiles/edit_cache.dir
 /home/daniel/Documentos/Project_ws/ros_game_nodes_ws/build/rosgame_players/CMakeFiles/rebuild_cache.dir

@@ -195,16 +195,12 @@ void Bridge::laser_info_exchange(const sensor_msgs::msg::LaserScan::SharedPtr &m
     laser_scan.range_max = msg->range_max;
     laser_scan.ranges = msg->ranges;
 
-    // En el mapa "RosgamePlayers" se busca el jugador cuyo campo "coppelia_laser_topic" coindice con el "frame_id" del msg.
-    for (auto &player : RosgamePlayers)
-    {
-        if (player.second.coppelia_laser_topic == msg->header.frame_id && !player.second.isbanned)
-        {
-            // Con el iterador que devuelve, accedemos al campo "pub2_" para reenviar el topic al nodo del jugador.
-            player.second.pub2_->publish(laser_scan);
-            return;
-        }
-    }
+    auto pointer = RosgamePlayers.find(robot_name);
+    // Con el iterador que devuelve, accedemos al campo "pub3_" para reenviar la informacion de la escena.
+    
+    if (!pointer->second.isbanned)
+        pointer->second.pub2_->publish(laser_scan);
+        //RCLCPP_INFO(this->get_logger(), "Recibe datos sensado");
 }
 
 

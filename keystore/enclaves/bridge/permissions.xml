@@ -12,32 +12,24 @@
         </domains>
         <publish>
           <topics>
-            <topic>rq/*/_action/cancel_goalRequest</topic>
-            <topic>rq/*/_action/get_resultRequest</topic>
-            <topic>rq/*/_action/send_goalRequest</topic>
-            <topic>rq/*Request</topic>
-            <topic>rr/*/_action/cancel_goalReply</topic>
-            <topic>rr/*/_action/get_resultReply</topic>
-            <topic>rr/*/_action/send_goalReply</topic>
-            <topic>rt/*/_action/feedback</topic>
-            <topic>rt/*/_action/status</topic>
-            <topic>rr/*Reply</topic>
-            <topic>rt/*</topic>
+            <topic>*</topic>
+            <topic>rt/Robot_1/cmd_vel</topic>
+            <topic>rt/Robot_2/cmd_vel</topic>
+            <topic>rt/Robot_3/cmd_vel</topic>
+            <topic>rt/Robot_4/cmd_vel</topic>
+            <topic>rt/Robot_5/cmd_vel</topic>
+            <topic>rt/Robot_6/cmd_vel</topic>
           </topics>
         </publish>
         <subscribe>
           <topics>
-            <topic>rq/*/_action/cancel_goalRequest</topic>
-            <topic>rq/*/_action/get_resultRequest</topic>
-            <topic>rq/*/_action/send_goalRequest</topic>
-            <topic>rq/*Request</topic>
-            <topic>rr/*/_action/cancel_goalReply</topic>
-            <topic>rr/*/_action/get_resultReply</topic>
-            <topic>rr/*/_action/send_goalReply</topic>
-            <topic>rt/*/_action/feedback</topic>
-            <topic>rt/*/_action/status</topic>
-            <topic>rr/*Reply</topic>
-            <topic>rt/*</topic>
+            <topic>*</topic>
+            <topic>rt/Robot_1/cmd_vel</topic>
+            <topic>rt/Robot_2/cmd_vel</topic>
+            <topic>rt/Robot_3/cmd_vel</topic>
+            <topic>rt/Robot_4/cmd_vel</topic>
+            <topic>rt/Robot_5/cmd_vel</topic>
+            <topic>rt/Robot_6/cmd_vel</topic>
           </topics>
         </subscribe>
       </allow_rule>

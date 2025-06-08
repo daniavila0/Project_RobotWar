@@ -1,9 +1,9 @@
 MIME-Version: 1.0
-Content-Type: multipart/signed; protocol="application/x-pkcs7-signature"; micalg="sha-256"; boundary="----AFD922C2BA6A0D875A6C94F72CB103AA"
+Content-Type: multipart/signed; protocol="application/x-pkcs7-signature"; micalg="sha-256"; boundary="----7B42D604354A518568817C3E6E5A83F6"
 
 This is an S/MIME signed message
 
-------AFD922C2BA6A0D875A6C94F72CB103AA
+------7B42D604354A518568817C3E6E5A83F6
 Content-Type: text/plain
 
 <dds xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.omg.org/spec/DDS-SECURITY/20170901/omg_shared_ca_permissions.xsd">
@@ -20,20 +20,8 @@ Content-Type: text/plain
         </domains>
         <publish>
           <topics>
-            <topic>rq/Robot_4/describe_parametersRequest</topic>
-            <topic>rq/Robot_4/get_parameter_typesRequest</topic>
-            <topic>rq/Robot_4/get_parametersRequest</topic>
-            <topic>rq/Robot_4/list_parametersRequest</topic>
-            <topic>rq/Robot_4/set_parametersRequest</topic>
-            <topic>rq/Robot_4/set_parameters_atomicallyRequest</topic>
-            <topic>rq/Robot_4/get_type_descriptionRequest</topic>
-            <topic>rr/Robot_4/describe_parametersReply</topic>
-            <topic>rr/Robot_4/get_parameter_typesReply</topic>
-            <topic>rr/Robot_4/get_parametersReply</topic>
-            <topic>rr/Robot_4/list_parametersReply</topic>
-            <topic>rr/Robot_4/set_parametersReply</topic>
-            <topic>rr/Robot_4/set_parameters_atomicallyReply</topic>
-            <topic>rr/Robot_4/get_type_descriptionReply</topic>
+            <topic>rq/*</topic>
+            <topic>rr/*</topic>
             <topic>rt/chatter</topic>
             <topic>rt/parameter_events</topic>
             <topic>rt/rosout</topic>
@@ -42,20 +30,8 @@ Content-Type: text/plain
         </publish>
         <subscribe>
           <topics>
-            <topic>rq/Robot_4/describe_parametersRequest</topic>
-            <topic>rq/Robot_4/get_parameter_typesRequest</topic>
-            <topic>rq/Robot_4/get_parametersRequest</topic>
-            <topic>rq/Robot_4/list_parametersRequest</topic>
-            <topic>rq/Robot_4/set_parametersRequest</topic>
-            <topic>rq/Robot_4/set_parameters_atomicallyRequest</topic>
-            <topic>rq/Robot_4/get_type_descriptionRequest</topic>
-            <topic>rr/Robot_4/describe_parametersReply</topic>
-            <topic>rr/Robot_4/get_parameter_typesReply</topic>
-            <topic>rr/Robot_4/get_parametersReply</topic>
-            <topic>rr/Robot_4/list_parametersReply</topic>
-            <topic>rr/Robot_4/set_parametersReply</topic>
-            <topic>rr/Robot_4/set_parameters_atomicallyReply</topic>
-            <topic>rr/Robot_4/get_type_descriptionReply</topic>
+            <topic>rq/*</topic>
+            <topic>rr/*</topic>
             <topic>rt/clock</topic>
             <topic>rt/parameter_events</topic>
             <topic>rt/Robot_4/laser_scan</topic>
@@ -83,7 +59,7 @@ Content-Type: text/plain
   </permissions>
 </dds>
 
-------AFD922C2BA6A0D875A6C94F72CB103AA
+------7B42D604354A518568817C3E6E5A83F6
 Content-Type: application/x-pkcs7-signature; name="smime.p7s"
 Content-Transfer-Encoding: base64
 Content-Disposition: attachment; filename="smime.p7s"
@@ -98,12 +74,12 @@ Af8CAQEwCgYIKoZIzj0EAwIDSAAwRQIgCAkJgINE6CKr1h6gfv9Fn/wVhV+iGflE
 c1sFl4jCauECIQCPWS/umASfgaocNoowQjxaiQEYZ540rFDAAi6fpnhZSTGCAX4w
 ggF6AgEBMCowEjEQMA4GA1UEAwwHc3JvczJDQQIUbvuh1wi8hpZJrUtc5H7sfKZd
 AkgwDQYJYIZIAWUDBAIBBQCggeQwGAYJKoZIhvcNAQkDMQsGCSqGSIb3DQEHATAc
-BgkqhkiG9w0BCQUxDxcNMjUwNTIzMDg0NzQyWjAvBgkqhkiG9w0BCQQxIgQgqKzt
-B85LqTS4RnPkTR4M2q3wDxnoUQhte3aWjdc6XfMweQYJKoZIhvcNAQkPMWwwajAL
+BgkqhkiG9w0BCQUxDxcNMjUwNjA4MDk1NTM2WjAvBgkqhkiG9w0BCQQxIgQgzGhd
+Pzxbz9PR0oy8F5ZXw6BKcXezlNVb/fCtWCy2dcIweQYJKoZIhvcNAQkPMWwwajAL
 BglghkgBZQMEASowCwYJYIZIAWUDBAEWMAsGCWCGSAFlAwQBAjAKBggqhkiG9w0D
 BzAOBggqhkiG9w0DAgICAIAwDQYIKoZIhvcNAwICAUAwBwYFKw4DAgcwDQYIKoZI
-hvcNAwICASgwCgYIKoZIzj0EAwIERzBFAiAktVmtdnBFo5MBvSfxzyiai8Ei1Nf9
-ksOETy3gzqsl9QIhAImjNk1/44wRNZYDOarn0M2KxzdCefAL+ylzp1ANLXL6
+hvcNAwICASgwCgYIKoZIzj0EAwIERzBFAiBYkNjUNQJGAJtJRifWJfRs1k0KVsA2
+sNnZqSYp9r7/PwIhAKgUaNx/RuWZO5Syqn5nyvGG27Ccznaqs1mZXgeObTh5
 
-------AFD922C2BA6A0D875A6C94F72CB103AA--
+------7B42D604354A518568817C3E6E5A83F6--
 

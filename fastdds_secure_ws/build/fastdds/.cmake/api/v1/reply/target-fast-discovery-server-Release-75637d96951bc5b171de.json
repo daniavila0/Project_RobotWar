@@ -1,0 +1,319 @@
+{
+	"artifacts" : 
+	[
+		{
+			"path" : "tools/fds/fast-discovery-server-1.0.1"
+		}
+	],
+	"backtrace" : 1,
+	"backtraceGraph" : 
+	{
+		"commands" : 
+		[
+			"add_executable",
+			"install",
+			"target_link_libraries",
+			"target_compile_definitions",
+			"include_directories"
+		],
+		"files" : 
+		[
+			"tools/fds/CMakeLists.txt",
+			"src/cpp/CMakeLists.txt",
+			"CMakeLists.txt"
+		],
+		"nodes" : 
+		[
+			{
+				"file" : 0
+			},
+			{
+				"command" : 0,
+				"file" : 0,
+				"line" : 56,
+				"parent" : 0
+			},
+			{
+				"command" : 1,
+				"file" : 0,
+				"line" : 87,
+				"parent" : 0
+			},
+			{
+				"command" : 2,
+				"file" : 0,
+				"line" : 67,
+				"parent" : 0
+			},
+			{
+				"file" : 1
+			},
+			{
+				"command" : 2,
+				"file" : 1,
+				"line" : 504,
+				"parent" : 4
+			},
+			{
+				"command" : 3,
+				"file" : 0,
+				"line" : 63,
+				"parent" : 0
+			},
+			{
+				"file" : 2
+			},
+			{
+				"command" : 4,
+				"file" : 2,
+				"line" : 271,
+				"parent" : 7
+			},
+			{
+				"command" : 4,
+				"file" : 2,
+				"line" : 272,
+				"parent" : 7
+			}
+		]
+	},
+	"compileGroups" : 
+	[
+		{
+			"compileCommandFragments" : 
+			[
+				{
+					"fragment" : " -Wall -Wpedantic -Wextra -Wno-unknown-pragmas -Wno-error=deprecated-declarations -Wno-switch-bool -Wno-psabi -Werror -O3 -DNDEBUG -std=gnu++11"
+				}
+			],
+			"defines" : 
+			[
+				{
+					"backtrace" : 3,
+					"define" : "FASTCDR_DYN_LINK"
+				},
+				{
+					"backtrace" : 3,
+					"define" : "FASTDDS_DYN_LINK"
+				},
+				{
+					"backtrace" : 6,
+					"define" : "FAST_SERVER_BINARY=\"fast-discovery-server-1.0.1\""
+				},
+				{
+					"backtrace" : 6,
+					"define" : "FAST_SERVER_VERSION=\"1.0.1\""
+				},
+				{
+					"backtrace" : 3,
+					"define" : "FOONATHAN_MEMORY=1"
+				},
+				{
+					"backtrace" : 3,
+					"define" : "FOONATHAN_MEMORY_VERSION_MAJOR=0"
+				},
+				{
+					"backtrace" : 3,
+					"define" : "FOONATHAN_MEMORY_VERSION_MINOR=7"
+				},
+				{
+					"backtrace" : 3,
+					"define" : "FOONATHAN_MEMORY_VERSION_PATCH=3"
+				},
+				{
+					"backtrace" : 3,
+					"define" : "TINYXML2_IMPORT"
+				},
+				{
+					"backtrace" : 3,
+					"define" : "_FILE_OFFSET_BITS=64"
+				}
+			],
+			"includes" : 
+			[
+				{
+					"backtrace" : 8,
+					"path" : "/home/daniel/fastdds_secure_ws/src/Fast-DDS/thirdparty/nlohmann-json"
+				},
+				{
+					"backtrace" : 9,
+					"path" : "/home/daniel/fastdds_secure_ws/src/Fast-DDS/thirdparty/filewatch"
+				},
+				{
+					"backtrace" : 3,
+					"path" : "/home/daniel/fastdds_secure_ws/src/Fast-DDS/include"
+				},
+				{
+					"backtrace" : 3,
+					"path" : "/home/daniel/fastdds_secure_ws/build/fastdds/include"
+				},
+				{
+					"backtrace" : 3,
+					"path" : "/home/daniel/fastdds_secure_ws/build/fastdds/include/fastdds"
+				},
+				{
+					"backtrace" : 3,
+					"path" : "/home/daniel/fastdds_secure_ws/src/Fast-DDS/src/cpp"
+				},
+				{
+					"backtrace" : 3,
+					"path" : "/home/daniel/fastdds_secure_ws/src/Fast-DDS/thirdparty/optionparser"
+				},
+				{
+					"backtrace" : 3,
+					"isSystem" : true,
+					"path" : "/home/daniel/fastdds_secure_ws/install/fastcdr/include"
+				},
+				{
+					"backtrace" : 3,
+					"isSystem" : true,
+					"path" : "/opt/ros/rolling/include/foonathan_memory"
+				}
+			],
+			"language" : "CXX",
+			"languageStandard" : 
+			{
+				"backtraces" : 
+				[
+					3
+				],
+				"standard" : "11"
+			},
+			"sourceIndexes" : 
+			[
+				0,
+				1
+			]
+		}
+	],
+	"dependencies" : 
+	[
+		{
+			"backtrace" : 3,
+			"id" : "fastdds::@75938a602bfe1332d7ce"
+		}
+	],
+	"id" : "fast-discovery-server::@23e66d161d9fc6ae77c4",
+	"install" : 
+	{
+		"destinations" : 
+		[
+			{
+				"backtrace" : 2,
+				"path" : "bin"
+			}
+		],
+		"prefix" : 
+		{
+			"path" : "/home/daniel/fastdds_secure_ws/install/fastdds"
+		}
+	},
+	"link" : 
+	{
+		"commandFragments" : 
+		[
+			{
+				"fragment" : "-Wall -Wpedantic -Wextra -Wno-unknown-pragmas -Wno-error=deprecated-declarations -Wno-switch-bool -Wno-psabi -Werror -O3 -DNDEBUG",
+				"role" : "flags"
+			},
+			{
+				"fragment" : "",
+				"role" : "flags"
+			},
+			{
+				"fragment" : "-Wl,-rpath,/home/daniel/fastdds_secure_ws/build/fastdds/src/cpp:/home/daniel/fastdds_secure_ws/install/fastcdr/lib:",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 3,
+				"fragment" : "../../src/cpp/libfastdds.so.3.2.2",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 3,
+				"fragment" : "/home/daniel/fastdds_secure_ws/install/fastcdr/lib/libfastcdr.so.2.3.0",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 5,
+				"fragment" : "/opt/ros/rolling/lib/libfoonathan_memory-0.7.3.a",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 5,
+				"fragment" : "-lpthread",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 5,
+				"fragment" : "-ldl",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 5,
+				"fragment" : "-lpthread",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 5,
+				"fragment" : "-ldl",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 5,
+				"fragment" : "/usr/lib/x86_64-linux-gnu/libtinyxml2.so.10.0.0",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 5,
+				"fragment" : "/usr/lib/x86_64-linux-gnu/libssl.so",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 5,
+				"fragment" : "/usr/lib/x86_64-linux-gnu/libcrypto.so",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 5,
+				"fragment" : "-lrt",
+				"role" : "libraries"
+			}
+		],
+		"language" : "CXX"
+	},
+	"name" : "fast-discovery-server",
+	"nameOnDisk" : "fast-discovery-server-1.0.1",
+	"paths" : 
+	{
+		"build" : "tools/fds",
+		"source" : "tools/fds"
+	},
+	"sourceGroups" : 
+	[
+		{
+			"name" : "Source Files",
+			"sourceIndexes" : 
+			[
+				0,
+				1
+			]
+		}
+	],
+	"sources" : 
+	[
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "tools/fds/CliDiscoveryEntrypoint.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "tools/fds/CliDiscoveryManager.cpp",
+			"sourceGroupIndex" : 0
+		}
+	],
+	"type" : "EXECUTABLE"
+}

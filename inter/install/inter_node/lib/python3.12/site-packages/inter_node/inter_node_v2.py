@@ -57,7 +57,7 @@ class Broker (Node):
         # Calculate FOV
         self.fovmat=fovmat
         self.timer = self.create_timer(0.15, self.calculateFOV)
-        self.timerpub=self.create_timer(10,self.publish_scene_data)
+        self.timerpub=self.create_timer(0.3,self.publish_scene_data)
         self.timerRead = self.create_timer(0.3,self.read_scene_data)
         self.timersk=self.create_timer(25,self.enable_used_skills)
         self.processes=[]
@@ -65,18 +65,13 @@ class Broker (Node):
 
     def callback_robot_gen(self,msg):
         self.get_logger().info('I heard: "%s"' % msg.data)
-        #global sceneData
         self.n_robots +=1
         print("[robot_Generator] Creating a new robot. Robot number "+str(self.n_robots)+" named: "+ msg.data)
         #file = '/home/daniel/Documentos/Project_ws/my_project/game_scene/model_robot.ttm'
-        file=sim.getStringParam(sim.stringparam_scene_path) + "/model_robot.ttm"
+        file=sim.getStringParam(sim.stringparam_scene_path) + "/game_models/model_robot.ttm"
         robot= sim.loadModel(file)
         sim.setObjectAlias(robot,"Robot_"+str(self.n_robots))
         alias="Robot_"+str(self.n_robots)
-        # params
-        sim.setNamedBoolParam("hammer_enabled_"+alias,False)
-        sim.setNamedBoolParam("shield_enabled_"+alias,False)
-        #sim.setNamedStringParam("nick_Robot"+self.n_robots,msg.data)
         # poses
         
         poses = self.get_all_positions()
@@ -185,7 +180,7 @@ class Broker (Node):
                 self.sceneData["Skills"][sk]["Position"]=[p[0],p[1],0.05]
                 options=["Hammer","Shield"]
                 self.sceneData["Skills"][sk]["ID"]= random.choice(options)
-                sim.setObjectInt32Param(skill_handle, sim.objintparam_visibility_layer, 1)
+                sim.setObjectInt32Param(skill_handle, sim.objintparam_visibility_layer, 0)
                 sim.setBufferProperty(sim.handle_scene, "customData.myTag", json.dumps(self.sceneData))
                 self.calculateFOV()
         pass
@@ -311,10 +306,7 @@ def robot_thread(name,fovmat):
             self.timerThread = self.create_timer(0.3, self.thread)
             self.timerSensing=self.create_timer(15,self.sensing)
             self.timerDebug=self.create_timer(10,self.debugging)
-            '''
-            sensing
-            pub laser
-            '''
+
             # Motores 
             self.motorLeft=sim.getObject(f"/{self.alias}/leftMotor")
             self.motorRight=sim.getObject(f"/{self.alias}/rightMotor")
@@ -399,9 +391,9 @@ def robot_thread(name,fovmat):
                     self.battery = self.battery + 1 if (self.battery+1) < 100 else 100
                 else:
                     if (self.battery>0.0):
-                        self.battery = self.battery - 0.01 - 0.01*(np.abs(self.v)+np.abs(self.w))
+                        self.battery = self.battery -0.00001- 0.01*(np.abs(self.v)+np.abs(self.w))
                         self.battery = 0.0 if self.battery<=0.0 else self.battery
-                self.sceneData["Robots"][self.alias]["Battery"]= self.battery# despues hay que hacer un write
+                self.sceneData["Robots"][self.alias]["Battery"]= self.battery
 
                 if self.battery < 5:
                     self.v=0.1*self.v
@@ -523,13 +515,13 @@ def robot_thread(name,fovmat):
         def debugging(self):
             if self.verbose:
                 if not self.endgame:
-                    print (f"[ DEBUG {self.nickname} ] Pose : {self.sceneData["Robots"][self.alias]["Pose"]}") # Funciona
-                    print (f"[ DEBUG {self.nickname} ] Battery : {self.battery}\t Cerca de cargador : {self.close2charger}")
-                    print (f"[ DEBUG {self.nickname} ] Skill : {self.sceneData["Robots"][self.alias]["Skill"]}")
-                    print (f"[ DEBUG {self.nickname} ] v:{self.v},w:{self.w}")
-                    print (f"[ DEBUG {self.nickname} ] Health : {self.health_level}")   
+                    self.get_logger().info(f"[{self.nickname}] Pose: {self.sceneData['Robots'][self.alias]['Pose']}")
+                    self.get_logger().info(f"[{self.nickname}] Battery: {self.battery} | Cerca de cargador: {self.close2charger}")
+                    self.get_logger().info(f"[{self.nickname}] Skill: {self.sceneData['Robots'][self.alias]['Skill']}")
+                    self.get_logger().info(f"[{self.nickname}] v: {self.v}, w: {self.w}")
+                    self.get_logger().info(f"[{self.nickname}] Health: {self.health_level}")
                 else:
-                    print("GAME OVER for "+self.nickname)
+                    self.get_logger().info(f"[{self.nickname}] GAME OVER")
                     
         def cmd_callback (self,msg):
             self.v=msg.linear.x

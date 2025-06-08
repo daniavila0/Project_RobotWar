@@ -1,9 +1,9 @@
 MIME-Version: 1.0
-Content-Type: multipart/signed; protocol="application/x-pkcs7-signature"; micalg="sha-256"; boundary="----FDA0F6456307CA831695E876406C38E9"
+Content-Type: multipart/signed; protocol="application/x-pkcs7-signature"; micalg="sha-256"; boundary="----B0D7F7973D31E3CC0CE49E7F476D2221"
 
 This is an S/MIME signed message
 
-------FDA0F6456307CA831695E876406C38E9
+------B0D7F7973D31E3CC0CE49E7F476D2221
 Content-Type: text/plain
 
 <dds xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.omg.org/spec/DDS-SECURITY/20170901/omg_shared_ca_permissions.xsd">
@@ -20,20 +20,8 @@ Content-Type: text/plain
         </domains>
         <publish>
           <topics>
-            <topic>rq/Robot_3/describe_parametersRequest</topic>
-            <topic>rq/Robot_3/get_parameter_typesRequest</topic>
-            <topic>rq/Robot_3/get_parametersRequest</topic>
-            <topic>rq/Robot_3/list_parametersRequest</topic>
-            <topic>rq/Robot_3/set_parametersRequest</topic>
-            <topic>rq/Robot_3/set_parameters_atomicallyRequest</topic>
-            <topic>rq/Robot_3/get_type_descriptionRequest</topic>
-            <topic>rr/Robot_3/describe_parametersReply</topic>
-            <topic>rr/Robot_3/get_parameter_typesReply</topic>
-            <topic>rr/Robot_3/get_parametersReply</topic>
-            <topic>rr/Robot_3/list_parametersReply</topic>
-            <topic>rr/Robot_3/set_parametersReply</topic>
-            <topic>rr/Robot_3/set_parameters_atomicallyReply</topic>
-            <topic>rr/Robot_3/get_type_descriptionReply</topic>
+            <topic>rq/*</topic>
+            <topic>rr/*</topic>
             <topic>rt/chatter</topic>
             <topic>rt/parameter_events</topic>
             <topic>rt/rosout</topic>
@@ -43,20 +31,8 @@ Content-Type: text/plain
         </publish>
         <subscribe>
           <topics>
-            <topic>rq/Robot_3/describe_parametersRequest</topic>
-            <topic>rq/Robot_3/get_parameter_typesRequest</topic>
-            <topic>rq/Robot_3/get_parametersRequest</topic>
-            <topic>rq/Robot_3/list_parametersRequest</topic>
-            <topic>rq/Robot_3/set_parametersRequest</topic>
-            <topic>rq/Robot_3/set_parameters_atomicallyRequest</topic>
-            <topic>rq/Robot_3/get_type_descriptionRequest</topic>
-            <topic>rr/Robot_3/describe_parametersReply</topic>
-            <topic>rr/Robot_3/get_parameter_typesReply</topic>
-            <topic>rr/Robot_3/get_parametersReply</topic>
-            <topic>rr/Robot_3/list_parametersReply</topic>
-            <topic>rr/Robot_3/set_parametersReply</topic>
-            <topic>rr/Robot_3/set_parameters_atomicallyReply</topic>
-            <topic>rr/Robot_3/get_type_descriptionReply</topic>
+            <topic>rq/*</topic>
+            <topic>rr/*</topic>
             <topic>rt/clock</topic>
             <topic>rt/parameter_events</topic>
             <topic>rt/Robot_3/laser_scan</topic>
@@ -84,7 +60,7 @@ Content-Type: text/plain
   </permissions>
 </dds>
 
-------FDA0F6456307CA831695E876406C38E9
+------B0D7F7973D31E3CC0CE49E7F476D2221
 Content-Type: application/x-pkcs7-signature; name="smime.p7s"
 Content-Transfer-Encoding: base64
 Content-Disposition: attachment; filename="smime.p7s"
@@ -99,12 +75,12 @@ Af8CAQEwCgYIKoZIzj0EAwIDSAAwRQIgCAkJgINE6CKr1h6gfv9Fn/wVhV+iGflE
 c1sFl4jCauECIQCPWS/umASfgaocNoowQjxaiQEYZ540rFDAAi6fpnhZSTGCAX4w
 ggF6AgEBMCowEjEQMA4GA1UEAwwHc3JvczJDQQIUbvuh1wi8hpZJrUtc5H7sfKZd
 AkgwDQYJYIZIAWUDBAIBBQCggeQwGAYJKoZIhvcNAQkDMQsGCSqGSIb3DQEHATAc
-BgkqhkiG9w0BCQUxDxcNMjUwNTIzMDg0NzI4WjAvBgkqhkiG9w0BCQQxIgQgGIr7
-VhYCUuDDLm4v+vBTYWyT16tbVPikUcZLwHZiXnUweQYJKoZIhvcNAQkPMWwwajAL
+BgkqhkiG9w0BCQUxDxcNMjUwNjA4MDk1NTMwWjAvBgkqhkiG9w0BCQQxIgQgC7gL
+j8U7obeS1v6gcf+Wre+hwQXh4yedf8KigtMZSlsweQYJKoZIhvcNAQkPMWwwajAL
 BglghkgBZQMEASowCwYJYIZIAWUDBAEWMAsGCWCGSAFlAwQBAjAKBggqhkiG9w0D
 BzAOBggqhkiG9w0DAgICAIAwDQYIKoZIhvcNAwICAUAwBwYFKw4DAgcwDQYIKoZI
-hvcNAwICASgwCgYIKoZIzj0EAwIERzBFAiEA/tew1rBBCUF/mTQIC5KRSC5ADgf2
-bUMAT0wPLHPpq4QCIGqXrS1uoJIyn6Cik7TC/eIy3xE7G7fsKtY6wJmjZbsP
+hvcNAwICASgwCgYIKoZIzj0EAwIERzBFAiEAqvENR+9xnB+cfd/vVlvWPFEjmjik
+tABTIBs1B8ob0TICIF2tp/jjtErjdTpV9CxDOnueYrGXN+E7byMp21Nij0xI
 
-------FDA0F6456307CA831695E876406C38E9--
+------B0D7F7973D31E3CC0CE49E7F476D2221--
 

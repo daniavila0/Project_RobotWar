@@ -48,6 +48,20 @@ ament_target_dependencies(warrior_player
                           geometry_msgs
                           sensor_msgs)
 
+# INSTANCIA Nº1 (ELUSIVE) 
+add_executable(elusive_player src/elusive_player.cpp src/main_warrior.cpp)
+target_link_libraries(elusive_player jsoncpp)  
+
+install(TARGETS
+   elusive_player
+   DESTINATION lib/${PROJECT_NAME})
+   
+ament_target_dependencies(elusive_player
+                          rosgame_bridge
+                          rclcpp
+                          std_msgs
+                          geometry_msgs
+                          sensor_msgs)
 
 install(DIRECTORY
         launch

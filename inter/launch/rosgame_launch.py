@@ -1,5 +1,6 @@
 from launch import LaunchDescription
 from launch_ros.actions import Node
+from launch.actions import SetEnvironmentVariable
 
 def generate_launch_description():
    return LaunchDescription([
@@ -13,11 +14,13 @@ def generate_launch_description():
     #parameters, interesante
 
     ),
+    SetEnvironmentVariable('FASTRTPS_LOG_LEVEL', 'Error'),
+    SetEnvironmentVariable('SECURITY_LOG_LEVEL', 'error'),
     Node(
     package='rosgame_bridge',
     #namespace='Bridge',
     executable='bridge',
     name='Bridge',
-    arguments=['--ros-args', '--enclave', '/bridge']
+    arguments=['--ros-args', '--enclave', '/bridge', '--log-level', 'error']
     ),
    ])

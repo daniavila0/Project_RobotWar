@@ -1,4 +1,5 @@
 /home/daniel/Documentos/Project_ws/ros_game_nodes_ws/install/rosgame_players/lib/rosgame_players/warrior_player
+/home/daniel/Documentos/Project_ws/ros_game_nodes_ws/install/rosgame_players/lib/rosgame_players/elusive_player
 /home/daniel/Documentos/Project_ws/ros_game_nodes_ws/install/rosgame_players/share/rosgame_players/launch/rosgame_2_players_launch.xml
 /home/daniel/Documentos/Project_ws/ros_game_nodes_ws/install/rosgame_players/share/rosgame_players/launch/rosgame_4_elusive_players_launch.xml
 /home/daniel/Documentos/Project_ws/ros_game_nodes_ws/install/rosgame_players/share/rosgame_players/launch/rosgame_6_players_launch.xml

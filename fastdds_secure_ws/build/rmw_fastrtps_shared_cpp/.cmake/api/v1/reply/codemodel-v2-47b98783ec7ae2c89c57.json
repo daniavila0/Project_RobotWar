@@ -1,0 +1,266 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"childIndexes" : 
+					[
+						1
+					],
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-.-126814c4bfebf1d96795.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.15"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						4,
+						5,
+						14
+					]
+				},
+				{
+					"build" : "test",
+					"childIndexes" : 
+					[
+						2,
+						3
+					],
+					"jsonFile" : "directory-test-451c0598f41488bb20b9.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.15"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 0,
+					"source" : "test",
+					"targetIndexes" : 
+					[
+						6,
+						7,
+						8,
+						9,
+						10,
+						11,
+						12,
+						13
+					]
+				},
+				{
+					"build" : "gtest",
+					"jsonFile" : "directory-gtest-57a544bb23497b987027.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.8"
+					},
+					"parentIndex" : 1,
+					"projectIndex" : 1,
+					"source" : "/opt/ros/rolling/src/gtest_vendor",
+					"targetIndexes" : 
+					[
+						2,
+						3
+					]
+				},
+				{
+					"build" : "gmock",
+					"jsonFile" : "directory-gmock-9d3f42460d8292325187.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.8"
+					},
+					"parentIndex" : 1,
+					"projectIndex" : 2,
+					"source" : "/opt/ros/rolling/src/gmock_vendor",
+					"targetIndexes" : 
+					[
+						0,
+						1
+					]
+				}
+			],
+			"name" : "",
+			"projects" : 
+			[
+				{
+					"childIndexes" : 
+					[
+						1,
+						2
+					],
+					"directoryIndexes" : 
+					[
+						0,
+						1
+					],
+					"name" : "rmw_fastrtps_shared_cpp",
+					"targetIndexes" : 
+					[
+						4,
+						5,
+						6,
+						7,
+						8,
+						9,
+						10,
+						11,
+						12,
+						13,
+						14
+					]
+				},
+				{
+					"directoryIndexes" : 
+					[
+						2
+					],
+					"name" : "gtest",
+					"parentIndex" : 0,
+					"targetIndexes" : 
+					[
+						2,
+						3
+					]
+				},
+				{
+					"directoryIndexes" : 
+					[
+						3
+					],
+					"name" : "gmock",
+					"parentIndex" : 0,
+					"targetIndexes" : 
+					[
+						0,
+						1
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 3,
+					"id" : "gmock::@0590522bda6a4df7f28a",
+					"jsonFile" : "target-gmock-3be09b28766f03f9d253.json",
+					"name" : "gmock",
+					"projectIndex" : 2
+				},
+				{
+					"directoryIndex" : 3,
+					"id" : "gmock_main::@0590522bda6a4df7f28a",
+					"jsonFile" : "target-gmock_main-e8b4834e21a968391841.json",
+					"name" : "gmock_main",
+					"projectIndex" : 2
+				},
+				{
+					"directoryIndex" : 2,
+					"id" : "gtest::@0af4add9fe94340e763e",
+					"jsonFile" : "target-gtest-4bd4a0d8166fe339a3f9.json",
+					"name" : "gtest",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 2,
+					"id" : "gtest_main::@0af4add9fe94340e763e",
+					"jsonFile" : "target-gtest_main-b7391942ef5e369dd1e3.json",
+					"name" : "gtest_main",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "rmw_fastrtps_shared_cpp::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-rmw_fastrtps_shared_cpp-f4c0d90c369424071698.json",
+					"name" : "rmw_fastrtps_shared_cpp",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "rmw_fastrtps_shared_cpp_uninstall::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-rmw_fastrtps_shared_cpp_uninstall-d13534f89cbd390dde3a.json",
+					"name" : "rmw_fastrtps_shared_cpp_uninstall",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "test_dds_qos_to_rmw_qos::@36f028580bb02cc8272a",
+					"jsonFile" : "target-test_dds_qos_to_rmw_qos-a142dc15c4581d83b8ee.json",
+					"name" : "test_dds_qos_to_rmw_qos",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "test_guid_utils::@36f028580bb02cc8272a",
+					"jsonFile" : "target-test_guid_utils-33e57570891cc203dfbd.json",
+					"name" : "test_guid_utils",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "test_logging::@36f028580bb02cc8272a",
+					"jsonFile" : "target-test_logging-1ab1db28da797d6c9b52.json",
+					"name" : "test_logging",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "test_names::@36f028580bb02cc8272a",
+					"jsonFile" : "target-test_names-a96145a6f8cdb2fc2f37.json",
+					"name" : "test_names",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "test_qos_profile_check_compatible::@36f028580bb02cc8272a",
+					"jsonFile" : "target-test_qos_profile_check_compatible-11295741cb3c395780a8.json",
+					"name" : "test_qos_profile_check_compatible",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "test_rmw_init_options::@36f028580bb02cc8272a",
+					"jsonFile" : "target-test_rmw_init_options-42e87707406ea6cf1afa.json",
+					"name" : "test_rmw_init_options",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "test_rmw_qos_to_dds_attributes::@36f028580bb02cc8272a",
+					"jsonFile" : "target-test_rmw_qos_to_dds_attributes-e93db3eac0313eb5a48d.json",
+					"name" : "test_rmw_qos_to_dds_attributes",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "test_security_logging::@36f028580bb02cc8272a",
+					"jsonFile" : "target-test_security_logging-5e86b298a885f9853f1b.json",
+					"name" : "test_security_logging",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "uninstall::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-uninstall-94ecdd5b5a91a0ebe8f1.json",
+					"name" : "uninstall",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "/home/daniel/fastdds_secure_ws/build/rmw_fastrtps_shared_cpp",
+		"source" : "/home/daniel/fastdds_secure_ws/src/rmw_fastrtps/rmw_fastrtps_shared_cpp"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 6
+	}
+}

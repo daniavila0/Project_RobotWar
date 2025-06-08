@@ -1,9 +1,9 @@
 MIME-Version: 1.0
-Content-Type: multipart/signed; protocol="application/x-pkcs7-signature"; micalg="sha-256"; boundary="----59E46C98C92001823CB83B1AEFF87421"
+Content-Type: multipart/signed; protocol="application/x-pkcs7-signature"; micalg="sha-256"; boundary="----651D92FA8D5EBDD944DF462272EFBB39"
 
 This is an S/MIME signed message
 
-------59E46C98C92001823CB83B1AEFF87421
+------651D92FA8D5EBDD944DF462272EFBB39
 Content-Type: text/plain
 
 <dds xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.omg.org/spec/DDS-SECURITY/20170901/omg_shared_ca_permissions.xsd">
@@ -20,20 +20,8 @@ Content-Type: text/plain
         </domains>
         <publish>
           <topics>
-            <topic>rq/Robot_5/describe_parametersRequest</topic>
-            <topic>rq/Robot_5/get_parameter_typesRequest</topic>
-            <topic>rq/Robot_5/get_parametersRequest</topic>
-            <topic>rq/Robot_5/list_parametersRequest</topic>
-            <topic>rq/Robot_5/set_parametersRequest</topic>
-            <topic>rq/Robot_5/set_parameters_atomicallyRequest</topic>
-            <topic>rq/Robot_5/get_type_descriptionRequest</topic>
-            <topic>rr/Robot_5/describe_parametersReply</topic>
-            <topic>rr/Robot_5/get_parameter_typesReply</topic>
-            <topic>rr/Robot_5/get_parametersReply</topic>
-            <topic>rr/Robot_5/list_parametersReply</topic>
-            <topic>rr/Robot_5/set_parametersReply</topic>
-            <topic>rr/Robot_5/set_parameters_atomicallyReply</topic>
-            <topic>rr/Robot_5/get_type_descriptionReply</topic>
+            <topic>rq/*</topic>
+            <topic>rr/*</topic>
             <topic>rt/chatter</topic>
             <topic>rt/parameter_events</topic>
             <topic>rt/rosout</topic>
@@ -42,20 +30,8 @@ Content-Type: text/plain
         </publish>
         <subscribe>
           <topics>
-            <topic>rq/Robot_5/describe_parametersRequest</topic>
-            <topic>rq/Robot_5/get_parameter_typesRequest</topic>
-            <topic>rq/Robot_5/get_parametersRequest</topic>
-            <topic>rq/Robot_5/list_parametersRequest</topic>
-            <topic>rq/Robot_5/set_parametersRequest</topic>
-            <topic>rq/Robot_5/set_parameters_atomicallyRequest</topic>
-            <topic>rq/Robot_5/get_type_descriptionRequest</topic>
-            <topic>rr/Robot_5/describe_parametersReply</topic>
-            <topic>rr/Robot_5/get_parameter_typesReply</topic>
-            <topic>rr/Robot_5/get_parametersReply</topic>
-            <topic>rr/Robot_5/list_parametersReply</topic>
-            <topic>rr/Robot_5/set_parametersReply</topic>
-            <topic>rr/Robot_5/set_parameters_atomicallyReply</topic>
-            <topic>rr/Robot_5/get_type_descriptionReply</topic>
+            <topic>rq/*</topic>
+            <topic>rr/*</topic>
             <topic>rt/clock</topic>
             <topic>rt/parameter_events</topic>
             <topic>rt/Robot_5/laser_scan</topic>
@@ -83,27 +59,27 @@ Content-Type: text/plain
   </permissions>
 </dds>
 
-------59E46C98C92001823CB83B1AEFF87421
+------651D92FA8D5EBDD944DF462272EFBB39
 Content-Type: application/x-pkcs7-signature; name="smime.p7s"
 Content-Transfer-Encoding: base64
 Content-Disposition: attachment; filename="smime.p7s"
 
-MIIC+QYJKoZIhvcNAQcCoIIC6jCCAuYCAQExDzANBglghkgBZQMEAgEFADALBgkq
+MIIC+AYJKoZIhvcNAQcCoIIC6TCCAuUCAQExDzANBglghkgBZQMEAgEFADALBgkq
 hkiG9w0BBwGgggE/MIIBOzCB4qADAgECAhRu+6HXCLyGlkmtS1zkfux8pl0CSDAK
 BggqhkjOPQQDAjASMRAwDgYDVQQDDAdzcm9zMkNBMB4XDTI1MDMxMjE4NDMwMFoX
 DTM1MDMxMTE4NDMwMFowEjEQMA4GA1UEAwwHc3JvczJDQTBZMBMGByqGSM49AgEG
 CCqGSM49AwEHA0IABBrCt76/TvWcx6CVKA5kOoFYxjmmxbYMvoVRfbKAITP5EmiK
 dDonT4sPM++8T9YiFgeIFNnjpE4YNF2ENXEsiCajFjAUMBIGA1UdEwEB/wQIMAYB
 Af8CAQEwCgYIKoZIzj0EAwIDSAAwRQIgCAkJgINE6CKr1h6gfv9Fn/wVhV+iGflE
-c1sFl4jCauECIQCPWS/umASfgaocNoowQjxaiQEYZ540rFDAAi6fpnhZSTGCAX4w
-ggF6AgEBMCowEjEQMA4GA1UEAwwHc3JvczJDQQIUbvuh1wi8hpZJrUtc5H7sfKZd
+c1sFl4jCauECIQCPWS/umASfgaocNoowQjxaiQEYZ540rFDAAi6fpnhZSTGCAX0w
+ggF5AgEBMCowEjEQMA4GA1UEAwwHc3JvczJDQQIUbvuh1wi8hpZJrUtc5H7sfKZd
 AkgwDQYJYIZIAWUDBAIBBQCggeQwGAYJKoZIhvcNAQkDMQsGCSqGSIb3DQEHATAc
-BgkqhkiG9w0BCQUxDxcNMjUwNTIzMDg0NzUwWjAvBgkqhkiG9w0BCQQxIgQgTmU4
-/uTdKu9z3LxfzRUtxVhqtHCQmfcQfGofUvEWQBkweQYJKoZIhvcNAQkPMWwwajAL
+BgkqhkiG9w0BCQUxDxcNMjUwNjA4MDk1NTQzWjAvBgkqhkiG9w0BCQQxIgQgxAL/
+qnsIFCYNwj9IzGXh194c03emGD85+6Lxzw4MZFIweQYJKoZIhvcNAQkPMWwwajAL
 BglghkgBZQMEASowCwYJYIZIAWUDBAEWMAsGCWCGSAFlAwQBAjAKBggqhkiG9w0D
 BzAOBggqhkiG9w0DAgICAIAwDQYIKoZIhvcNAwICAUAwBwYFKw4DAgcwDQYIKoZI
-hvcNAwICASgwCgYIKoZIzj0EAwIERzBFAiA/+YnGcMrZgAVXhIKYd0fRcDW/uxeC
-OPw0sXzm0rGu8wIhAL/VJ1X6GBidBGI3zN53VNdzTl2qyJvxBr8BiYNn2aKU
+hvcNAwICASgwCgYIKoZIzj0EAwIERjBEAiBovAHT0tSoVVB0NsDmtXin8ERURPsf
+AH2Bb9WEN+/9PQIgEhptAW0SMIx+URRw/CgqGk5FUonkb6zDRYcaxNRJ1mk=
 
-------59E46C98C92001823CB83B1AEFF87421--
+------651D92FA8D5EBDD944DF462272EFBB39--
 

@@ -1,0 +1,1 @@
+ament_cmake_symlink_install_files("/home/daniel/fastdds_secure_ws/src/rmw_fastrtps/rmw_fastrtps_cpp" FILES "/opt/ros/rolling/lib/python3.12/site-packages/ament_package/template/environment_hook/library_path.sh" "DESTINATION" "share/rmw_fastrtps_cpp/environment")

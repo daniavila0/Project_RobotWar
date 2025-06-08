@@ -30,6 +30,7 @@ colors["Robot_2"]=[0,1,0]
 colors["Robot_3"]=[0,0,1]
 colors["Robot_4"]=[1,0,1]
 colors["Robot_5"]=[0,1,1]
+colors["Robot_6"]=[1,0,0]
 laser_color=[1,0,0]
 
 distance_between_wheels = 0.331 # meters
@@ -49,7 +50,7 @@ class Broker (Node):
         self.robot_gen
         # VARS
         self.n_robots=0
-        self.handlers=[]
+        #self.handlers=[]
 
         self.sceneData = json.loads(sim.getBufferProperty(sim.handle_scene, "customData.myTag"))
         
@@ -67,29 +68,20 @@ class Broker (Node):
         #global sceneData
         self.n_robots +=1
         print("[robot_Generator] Creating a new robot. Robot number "+str(self.n_robots)+" named: "+ msg.data)
-        file = '/home/daniel/Documentos/Project_ws/my_project/game_scene/model_robot.ttm'
+        file=sim.getStringParam(sim.stringparam_scene_path) + "/game_models/model_robot.ttm"
         robot= sim.loadModel(file)
-        self.handlers.append(robot)  # Pila de manejadores
+        #self.handlers.append(robot)  # Pila de manejadores
         sim.setObjectAlias(robot,"Robot_"+str(self.n_robots))
         alias="Robot_"+str(self.n_robots)
-        # params
-        sim.setNamedBoolParam("hammer_enabled_"+alias,False)
-        sim.setNamedBoolParam("shield_enabled_"+alias,False)
-        #sim.setNamedStringParam("nick_Robot"+self.n_robots,msg.data)
         # poses
-        def valid_pose(pos,poses_):
-                for i in range(len(poses_)):
-                    dist = np.linalg.norm(np.array(pos) - np.array(poses_[i][:2]))
-                    if dist<2:
-                        return False
-                return True
+
         poses = self.get_all_positions()
         if verbose:
             print(f"[ DEBUG ] Estas son las poses iniciales: \n {poses}") 
         p = sim.getObjectPosition(robot,-1)
         o = sim.getObjectOrientation(robot,-1)
         
-        while (not valid_pose(p[:2],poses)):
+        while (not self.valid_pose(p[:2],poses)):
                 p[0]=np.random.rand()*12-6
                 p[1]=np.random.rand()*12-6
                 o[2]= o[2]+np.pi/2
@@ -165,7 +157,12 @@ class Broker (Node):
                 else:
                     posiciones.append(objeto["Position"][:2])
         return posiciones
-    
+    def valid_pose(self,pos,poses_):
+            for i in range(len(poses_)):
+                dist = np.linalg.norm(np.array(pos) - np.array(poses_[i][:2]))
+                if dist<2:
+                    return False
+            return True
     def read_scene_data(self):
         self.sceneData = json.loads(sim.getBufferProperty(sim.handle_scene, "customData.myTag"))
         
@@ -272,19 +269,30 @@ def robot_thread(name,fovmat):
                 print(f"[ DEBUG ] Este el el fovmat inicial de {self.alias}:\n {self.fovmat.get(self.alias,{})}")
             '''
             [ DEBUG ] Este el el fovmat de Robot_1:
-            {'robots': [-1],
-             'chargers': [4.062976385420454, 8.222223695267306, 3.524774232660133],
-             'skills': [3.524774232660133, 3.524774232660133, 3.524774232660133, 3.524774232660133],
-             'obstacles': [3.524774232660133, 3.524774232660133, 3.524774232660133, 3.524774232660133, 3.524774232660133]}
-
+            {'robots': [
+                            -1
+                        ],
+             'chargers': [
+                            4.06,
+                            8.22
+                        ],
+             'skills': [
+                            5.46,
+                            3.52
+                        ],
+             'obstacles': [
+                            2.1,
+                            5.6
+                        ]
+            }
             '''
             # Se lee    self.fovmat.get(self.alias, {})
             # Publicadores y Subsciptores
             self.subscriber_vel = self.create_subscription(Twist,'/control_'+self.alias+'/cmdvel',self.cmd_callback,3)
             self.laser_publisher = self.create_publisher(LaserScan, f'/sensor_{self.alias}/laser_scan', 10)
             # Timer 
-            self.timerThread = self.create_timer(0.3, self.thread)
-            self.timerSensing=self.create_timer(15,self.sensing)
+            self.timerThread = self.create_timer(0.2, self.thread)
+            self.timerSensing=self.create_timer(0.1,self.sensing)
             self.timerDebug=self.create_timer(10,self.debugging)
             '''
             sensing
@@ -332,7 +340,7 @@ def robot_thread(name,fovmat):
             self.discardMaxDistPts= True
             self.visionSensors=[sim.getObject("./sensor1"),sim.getObject("./sensor2")]
     
-            # La parte de colecciones no la entiendo bien
+            # Evitar que el laser colisione con el escudo o el martillo
             
             collection=sim.createCollection(0)
             sim.addItemToCollection(collection,sim.handle_all,-1,0)
@@ -374,7 +382,7 @@ def robot_thread(name,fovmat):
                     self.battery = self.battery + 1 if (self.battery+1) < 100 else 100
                 else:
                     if (self.battery>0.0):
-                        self.battery = self.battery - 0.01 - 0.01*(np.abs(self.v)+np.abs(self.w))
+                        self.battery = self.battery-0.00001- 0.01*(np.abs(self.v)+np.abs(self.w))
                         self.battery = 0.0 if self.battery<=0.0 else self.battery
                 self.sceneData["Robots"][self.alias]["Battery"]= self.battery# despues hay que hacer un write
 
@@ -498,13 +506,13 @@ def robot_thread(name,fovmat):
         def debugging(self):
             if self.verbose:
                 if not self.endgame:
-                    print (f"[ DEBUG {self.nickname} ] Pose : {self.sceneData["Robots"][self.alias]["Pose"]}") # Funciona
-                    print (f"[ DEBUG {self.nickname} ] Battery : {self.battery}\t Cerca de cargador : {self.close2charger}")
-                    print (f"[ DEBUG {self.nickname} ] Skill : {self.sceneData["Robots"][self.alias]["Skill"]}")
-                    print (f"[ DEBUG {self.nickname} ] v:{self.v},w:{self.w}")
-                    print (f"[ DEBUG {self.nickname} ] Health : {self.health_level}")   
+                    self.get_logger().info(f"[{self.nickname}] Pose: {self.sceneData['Robots'][self.alias]['Pose']}")
+                    self.get_logger().info(f"[{self.nickname}] Battery: {self.battery} | Cerca de cargador: {self.close2charger}")
+                    self.get_logger().info(f"[{self.nickname}] Skill: {self.sceneData['Robots'][self.alias]['Skill']}")
+                    self.get_logger().info(f"[{self.nickname}] v: {self.v}, w: {self.w}")
+                    self.get_logger().info(f"[{self.nickname}] Health: {self.health_level}")
                 else:
-                    print("GAME OVER for "+self.nickname)
+                    self.get_logger().info(f"[{self.nickname}] GAME OVER")
                     
         def cmd_callback (self,msg):
             self.v=msg.linear.x
@@ -560,7 +568,7 @@ def robot_thread(name,fovmat):
             if self.measuredData:
                 scan_msg=LaserScan()
                 scan_msg.header = Header()
-                scan_msg.header.stamp = node.get_clock().now().to_msg()  # si usas rclpy
+                scan_msg.header.stamp = node.get_clock().now().to_msg()  
                 scan_msg.header.frame_id = f"/{self.alias}/laser_scan"
 
                 scan_msg.angle_min = -120 * np.pi / 180
@@ -587,14 +595,7 @@ def robot_thread(name,fovmat):
             node.destroy_node()
     
     rclpy.shutdown() 
-    '''
-    try:
-        
-    except KeyboardInterrupt:
-        pass
-    finally:
-        
-'''
+
 
 
 

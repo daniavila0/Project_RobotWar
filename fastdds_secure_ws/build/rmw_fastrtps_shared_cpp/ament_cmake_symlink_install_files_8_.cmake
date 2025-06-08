@@ -1,0 +1,1 @@
+ament_cmake_symlink_install_files("/home/daniel/fastdds_secure_ws/src/rmw_fastrtps/rmw_fastrtps_shared_cpp" FILES "/home/daniel/fastdds_secure_ws/build/rmw_fastrtps_shared_cpp/ament_cmake_environment_hooks/local_setup.bash" "DESTINATION" "share/rmw_fastrtps_shared_cpp")

@@ -1,9 +1,9 @@
 MIME-Version: 1.0
-Content-Type: multipart/signed; protocol="application/x-pkcs7-signature"; micalg="sha-256"; boundary="----EAEC1453EFFAEDA088CB24B26BE023E0"
+Content-Type: multipart/signed; protocol="application/x-pkcs7-signature"; micalg="sha-256"; boundary="----592E43DCC588334B422B5810A5B7318A"
 
 This is an S/MIME signed message
 
-------EAEC1453EFFAEDA088CB24B26BE023E0
+------592E43DCC588334B422B5810A5B7318A
 Content-Type: text/plain
 
 <dds xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.omg.org/spec/DDS-SECURITY/20170901/omg_shared_ca_permissions.xsd">
@@ -20,20 +20,8 @@ Content-Type: text/plain
         </domains>
         <publish>
           <topics>
-            <topic>rq/Robot_6/describe_parametersRequest</topic>
-            <topic>rq/Robot_6/get_parameter_typesRequest</topic>
-            <topic>rq/Robot_6/get_parametersRequest</topic>
-            <topic>rq/Robot_6/list_parametersRequest</topic>
-            <topic>rq/Robot_6/set_parametersRequest</topic>
-            <topic>rq/Robot_6/set_parameters_atomicallyRequest</topic>
-            <topic>rq/Robot_6/get_type_descriptionRequest</topic>
-            <topic>rr/Robot_6/describe_parametersReply</topic>
-            <topic>rr/Robot_6/get_parameter_typesReply</topic>
-            <topic>rr/Robot_6/get_parametersReply</topic>
-            <topic>rr/Robot_6/list_parametersReply</topic>
-            <topic>rr/Robot_6/set_parametersReply</topic>
-            <topic>rr/Robot_6/set_parameters_atomicallyReply</topic>
-            <topic>rr/Robot_6/get_type_descriptionReply</topic>
+            <topic>rq/*</topic>
+            <topic>rr/*</topic>
             <topic>rt/chatter</topic>
             <topic>rt/parameter_events</topic>
             <topic>rt/rosout</topic>
@@ -42,20 +30,8 @@ Content-Type: text/plain
         </publish>
         <subscribe>
           <topics>
-            <topic>rq/Robot_6/describe_parametersRequest</topic>
-            <topic>rq/Robot_6/get_parameter_typesRequest</topic>
-            <topic>rq/Robot_6/get_parametersRequest</topic>
-            <topic>rq/Robot_6/list_parametersRequest</topic>
-            <topic>rq/Robot_6/set_parametersRequest</topic>
-            <topic>rq/Robot_6/set_parameters_atomicallyRequest</topic>
-            <topic>rq/Robot_6/get_type_descriptionRequest</topic>
-            <topic>rr/Robot_6/describe_parametersReply</topic>
-            <topic>rr/Robot_6/get_parameter_typesReply</topic>
-            <topic>rr/Robot_6/get_parametersReply</topic>
-            <topic>rr/Robot_6/list_parametersReply</topic>
-            <topic>rr/Robot_6/set_parametersReply</topic>
-            <topic>rr/Robot_6/set_parameters_atomicallyReply</topic>
-            <topic>rr/Robot_6/get_type_descriptionReply</topic>
+            <topic>rq/*</topic>
+            <topic>rr/*</topic>
             <topic>rt/clock</topic>
             <topic>rt/parameter_events</topic>
             <topic>rt/Robot_6/laser_scan</topic>
@@ -83,7 +59,7 @@ Content-Type: text/plain
   </permissions>
 </dds>
 
-------EAEC1453EFFAEDA088CB24B26BE023E0
+------592E43DCC588334B422B5810A5B7318A
 Content-Type: application/x-pkcs7-signature; name="smime.p7s"
 Content-Transfer-Encoding: base64
 Content-Disposition: attachment; filename="smime.p7s"
@@ -98,12 +74,12 @@ Af8CAQEwCgYIKoZIzj0EAwIDSAAwRQIgCAkJgINE6CKr1h6gfv9Fn/wVhV+iGflE
 c1sFl4jCauECIQCPWS/umASfgaocNoowQjxaiQEYZ540rFDAAi6fpnhZSTGCAX4w
 ggF6AgEBMCowEjEQMA4GA1UEAwwHc3JvczJDQQIUbvuh1wi8hpZJrUtc5H7sfKZd
 AkgwDQYJYIZIAWUDBAIBBQCggeQwGAYJKoZIhvcNAQkDMQsGCSqGSIb3DQEHATAc
-BgkqhkiG9w0BCQUxDxcNMjUwNTIzMDg0NzU4WjAvBgkqhkiG9w0BCQQxIgQgL4YB
-ZORBpRBKbex/uqiiMASSzoEUeBgzS14XV2i+VQoweQYJKoZIhvcNAQkPMWwwajAL
+BgkqhkiG9w0BCQUxDxcNMjUwNjA4MDk1NTUwWjAvBgkqhkiG9w0BCQQxIgQgULPF
+vhrNM4T1xeRrF56hw3bNflKt65nns60ILZM+wQoweQYJKoZIhvcNAQkPMWwwajAL
 BglghkgBZQMEASowCwYJYIZIAWUDBAEWMAsGCWCGSAFlAwQBAjAKBggqhkiG9w0D
 BzAOBggqhkiG9w0DAgICAIAwDQYIKoZIhvcNAwICAUAwBwYFKw4DAgcwDQYIKoZI
-hvcNAwICASgwCgYIKoZIzj0EAwIERzBFAiBmbOnVU9MQ0CE0zx89SNy/bm0tKNwO
-lfQ+iUKge5FAnAIhAIY+sHTiBKdzJkQ5T4MgxytqbozDZfl39658mR11J+fy
+hvcNAwICASgwCgYIKoZIzj0EAwIERzBFAiA32cuM90UxLVxLr07WxuV6HJ6PyL9u
+aI+m+kI4FkD0hwIhAJpmHBgwjPcumXTUgBXTWn4RR7vNkO4/ha91VZ/138/l
 
-------EAEC1453EFFAEDA088CB24B26BE023E0--
+------592E43DCC588334B422B5810A5B7318A--
 
