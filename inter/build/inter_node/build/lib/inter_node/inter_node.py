@@ -136,6 +136,8 @@ class Broker (Node):
 
         # Es necesario tener el fov con nuestro robot antes de llamarlo, aparte del temporizador
         self.calculateFOV()
+        
+        self.publish_scene_data()
 
         #MULTIPROCESSING
         proc=multiprocessing.Process(target=robot_thread,args=["Robot_"+str(self.n_robots),self.fovmat]) #argumento es el handler
@@ -259,8 +261,22 @@ def robot_thread(name,fovmat):
             super().__init__('robot_thread_node')
             self.handler=sim.getObject(f'/{name}')
             self.alias=sim.getObjectAlias(self.handler)
-            self.sceneData=json.loads(sim.getBufferProperty(sim.handle_scene, "customData.myTag"))
-            self.nickname = self.sceneData["Robots"][self.alias].get("Nickname")
+            
+            intentos=0
+            while intentos < 15:
+                scene_raw=json.loads(sim.getBufferProperty(sim.handle_scene, "customData.myTag"))
+                if scene_raw:
+                    try:
+                        self.sceneData = scene_raw
+                        if self.alias in self.sceneData.get("Robots", {}) and "Nickname" in self.sceneData["Robots"][self.alias]:
+                            self.nickname = self.sceneData["Robots"][self.alias]["Nickname"]
+                            break
+                    except KeyError:
+                        pass
+                time.sleep(0.5)
+                intentos += 1
+                    
+    
             self.verbose=True
             ### IMPORTANTE 
             # El fovmat del robot solo lee su parte
@@ -315,6 +331,8 @@ def robot_thread(name,fovmat):
             sim.setShapeBB(self.collVolumeHandler,{0.7,0.6,0.5})
             
             # Initialize Robot Parameters 
+            
+            
             self.ability_duration = 60    # seconds
             self.battery = 100            # initial battery level
             self.close2charger = False

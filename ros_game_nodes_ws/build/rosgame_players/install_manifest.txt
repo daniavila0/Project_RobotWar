@@ -3,6 +3,10 @@
 /home/daniel/Documentos/Project_ws/ros_game_nodes_ws/install/rosgame_players/share/rosgame_players/launch/rosgame_2_players_launch.xml
 /home/daniel/Documentos/Project_ws/ros_game_nodes_ws/install/rosgame_players/share/rosgame_players/launch/rosgame_4_elusive_players_launch.xml
 /home/daniel/Documentos/Project_ws/ros_game_nodes_ws/install/rosgame_players/share/rosgame_players/launch/rosgame_6_players_launch.xml
+/home/daniel/Documentos/Project_ws/ros_game_nodes_ws/install/rosgame_players/lib/rosgame_players/fraud_player
+/home/daniel/Documentos/Project_ws/ros_game_nodes_ws/install/rosgame_players/share/rosgame_players/launch/rosgame_2_players_launch.xml
+/home/daniel/Documentos/Project_ws/ros_game_nodes_ws/install/rosgame_players/share/rosgame_players/launch/rosgame_4_elusive_players_launch.xml
+/home/daniel/Documentos/Project_ws/ros_game_nodes_ws/install/rosgame_players/share/rosgame_players/launch/rosgame_6_players_launch.xml
 /home/daniel/Documentos/Project_ws/ros_game_nodes_ws/install/rosgame_players/share/ament_index/resource_index/package_run_dependencies/rosgame_players
 /home/daniel/Documentos/Project_ws/ros_game_nodes_ws/install/rosgame_players/share/ament_index/resource_index/parent_prefix_path/rosgame_players
 /home/daniel/Documentos/Project_ws/ros_game_nodes_ws/install/rosgame_players/share/rosgame_players/environment/ament_prefix_path.sh

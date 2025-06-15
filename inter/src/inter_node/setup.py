@@ -22,7 +22,8 @@ setup(
     entry_points={
         'console_scripts': [
             'broker = inter_node.inter_node:main',
-            'broker_v2=inter_node.inter_node_v2:main'
+            'broker_v2=inter_node.inter_node_v2:main',
+            'broker_v3=inter_node.inter_node_v3:main'
             #name = pkg_name.file_name:main
         ],
     },

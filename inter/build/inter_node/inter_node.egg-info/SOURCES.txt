@@ -11,6 +11,7 @@ setup.py
 inter_node/__init__.py
 inter_node/inter_node.py
 inter_node/inter_node_v2.py
+inter_node/inter_node_v3.py
 resource/inter_node
 test/test_copyright.py
 test/test_flake8.py

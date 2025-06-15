@@ -224,17 +224,17 @@ elusive_player/fast:
 .PHONY : elusive_player/fast
 
 #=============================================================================
-# Target rules for targets named pacific_player
+# Target rules for targets named fraud_player
 
 # Build rule for target.
-pacific_player: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 pacific_player
-.PHONY : pacific_player
+fraud_player: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 fraud_player
+.PHONY : fraud_player
 
 # fast build rule for target.
-pacific_player/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/pacific_player.dir/build.make CMakeFiles/pacific_player.dir/build
-.PHONY : pacific_player/fast
+fraud_player/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/fraud_player.dir/build.make CMakeFiles/fraud_player.dir/build
+.PHONY : fraud_player/fast
 
 src/elusive_player.o: src/elusive_player.cpp.o
 .PHONY : src/elusive_player.o
@@ -260,6 +260,30 @@ src/elusive_player.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/elusive_player.dir/build.make CMakeFiles/elusive_player.dir/src/elusive_player.cpp.s
 .PHONY : src/elusive_player.cpp.s
 
+src/fraud_player.o: src/fraud_player.cpp.o
+.PHONY : src/fraud_player.o
+
+# target to build an object file
+src/fraud_player.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/fraud_player.dir/build.make CMakeFiles/fraud_player.dir/src/fraud_player.cpp.o
+.PHONY : src/fraud_player.cpp.o
+
+src/fraud_player.i: src/fraud_player.cpp.i
+.PHONY : src/fraud_player.i
+
+# target to preprocess a source file
+src/fraud_player.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/fraud_player.dir/build.make CMakeFiles/fraud_player.dir/src/fraud_player.cpp.i
+.PHONY : src/fraud_player.cpp.i
+
+src/fraud_player.s: src/fraud_player.cpp.s
+.PHONY : src/fraud_player.s
+
+# target to generate assembly for a file
+src/fraud_player.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/fraud_player.dir/build.make CMakeFiles/fraud_player.dir/src/fraud_player.cpp.s
+.PHONY : src/fraud_player.cpp.s
+
 src/main_warrior.o: src/main_warrior.cpp.o
 .PHONY : src/main_warrior.o
 
@@ -267,7 +291,7 @@ src/main_warrior.o: src/main_warrior.cpp.o
 src/main_warrior.cpp.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/warrior_player.dir/build.make CMakeFiles/warrior_player.dir/src/main_warrior.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/elusive_player.dir/build.make CMakeFiles/elusive_player.dir/src/main_warrior.cpp.o
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/pacific_player.dir/build.make CMakeFiles/pacific_player.dir/src/main_warrior.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/fraud_player.dir/build.make CMakeFiles/fraud_player.dir/src/main_warrior.cpp.o
 .PHONY : src/main_warrior.cpp.o
 
 src/main_warrior.i: src/main_warrior.cpp.i
@@ -277,7 +301,7 @@ src/main_warrior.i: src/main_warrior.cpp.i
 src/main_warrior.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/warrior_player.dir/build.make CMakeFiles/warrior_player.dir/src/main_warrior.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/elusive_player.dir/build.make CMakeFiles/elusive_player.dir/src/main_warrior.cpp.i
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/pacific_player.dir/build.make CMakeFiles/pacific_player.dir/src/main_warrior.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/fraud_player.dir/build.make CMakeFiles/fraud_player.dir/src/main_warrior.cpp.i
 .PHONY : src/main_warrior.cpp.i
 
 src/main_warrior.s: src/main_warrior.cpp.s
@@ -287,32 +311,8 @@ src/main_warrior.s: src/main_warrior.cpp.s
 src/main_warrior.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/warrior_player.dir/build.make CMakeFiles/warrior_player.dir/src/main_warrior.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/elusive_player.dir/build.make CMakeFiles/elusive_player.dir/src/main_warrior.cpp.s
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/pacific_player.dir/build.make CMakeFiles/pacific_player.dir/src/main_warrior.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/fraud_player.dir/build.make CMakeFiles/fraud_player.dir/src/main_warrior.cpp.s
 .PHONY : src/main_warrior.cpp.s
-
-src/pacific_player.o: src/pacific_player.cpp.o
-.PHONY : src/pacific_player.o
-
-# target to build an object file
-src/pacific_player.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/pacific_player.dir/build.make CMakeFiles/pacific_player.dir/src/pacific_player.cpp.o
-.PHONY : src/pacific_player.cpp.o
-
-src/pacific_player.i: src/pacific_player.cpp.i
-.PHONY : src/pacific_player.i
-
-# target to preprocess a source file
-src/pacific_player.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/pacific_player.dir/build.make CMakeFiles/pacific_player.dir/src/pacific_player.cpp.i
-.PHONY : src/pacific_player.cpp.i
-
-src/pacific_player.s: src/pacific_player.cpp.s
-.PHONY : src/pacific_player.s
-
-# target to generate assembly for a file
-src/pacific_player.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/pacific_player.dir/build.make CMakeFiles/pacific_player.dir/src/pacific_player.cpp.s
-.PHONY : src/pacific_player.cpp.s
 
 src/warrior.o: src/warrior.cpp.o
 .PHONY : src/warrior.o
@@ -354,17 +354,17 @@ help:
 	@echo "... rosgame_players_uninstall"
 	@echo "... uninstall"
 	@echo "... elusive_player"
-	@echo "... pacific_player"
+	@echo "... fraud_player"
 	@echo "... warrior_player"
 	@echo "... src/elusive_player.o"
 	@echo "... src/elusive_player.i"
 	@echo "... src/elusive_player.s"
+	@echo "... src/fraud_player.o"
+	@echo "... src/fraud_player.i"
+	@echo "... src/fraud_player.s"
 	@echo "... src/main_warrior.o"
 	@echo "... src/main_warrior.i"
 	@echo "... src/main_warrior.s"
-	@echo "... src/pacific_player.o"
-	@echo "... src/pacific_player.i"
-	@echo "... src/pacific_player.s"
 	@echo "... src/warrior.o"
 	@echo "... src/warrior.i"
 	@echo "... src/warrior.s"

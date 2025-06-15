@@ -67,5 +67,23 @@ install(DIRECTORY
         launch
         DESTINATION share/${PROJECT_NAME}
         )           
+# INSTANCIA Nº2 (FRAUD) 
+add_executable(fraud_player src/fraud_player.cpp src/main_warrior.cpp)
+target_link_libraries(fraud_player jsoncpp)  
 
+install(TARGETS
+   fraud_player
+   DESTINATION lib/${PROJECT_NAME})
+   
+ament_target_dependencies(fraud_player
+                          rosgame_bridge
+                          rclcpp
+                          std_msgs
+                          geometry_msgs
+                          sensor_msgs)
+
+install(DIRECTORY
+        launch
+        DESTINATION share/${PROJECT_NAME}
+        )           
 ament_package()

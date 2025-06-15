@@ -31,6 +31,7 @@ colors["Robot_2"]=[0,1,0]
 colors["Robot_3"]=[0,0,1]
 colors["Robot_4"]=[1,0,1]
 colors["Robot_5"]=[0,1,1]
+colors["Robot_6"]=[1,1,0]
 laser_color=[1,0,0]
 
 distance_between_wheels = 0.331 # meters
@@ -57,8 +58,8 @@ class Broker (Node):
         # Calculate FOV
         self.fovmat=fovmat
         self.timer = self.create_timer(0.15, self.calculateFOV)
-        self.timerpub=self.create_timer(0.3,self.publish_scene_data)
-        self.timerRead = self.create_timer(0.3,self.read_scene_data)
+        self.timerpub=self.create_timer(1,self.publish_scene_data)
+        self.timerRead = self.create_timer(1,self.read_scene_data)
         self.timersk=self.create_timer(25,self.enable_used_skills)
         self.processes=[]
         
@@ -135,6 +136,7 @@ class Broker (Node):
 
         # Es necesario tener el fov con nuestro robot antes de llamarlo, aparte del temporizador
         self.calculateFOV()
+        self.publish_scene_data()
 
         #MULTIPROCESSING
         proc=multiprocessing.Process(target=robot_thread,args=["Robot_"+str(self.n_robots),self.fovmat]) #argumento es el handler
@@ -280,8 +282,20 @@ def robot_thread(name,fovmat):
             super().__init__('robot_thread_node')
             self.handler=sim.getObject(f'/{name}')
             self.alias=sim.getObjectAlias(self.handler)
-            self.sceneData=json.loads(sim.getBufferProperty(sim.handle_scene, "customData.myTag"))
-            self.nickname = self.sceneData["Robots"][self.alias].get("Nickname")
+            intentos=0
+            while intentos < 15:
+                scene_raw=json.loads(sim.getBufferProperty(sim.handle_scene, "customData.myTag"))
+                if scene_raw:
+                    try:
+                        self.sceneData = scene_raw
+                        if self.alias in self.sceneData.get("Robots", {}) and "Nickname" in self.sceneData["Robots"][self.alias]:
+                            self.nickname = self.sceneData["Robots"][self.alias]["Nickname"]
+                            break
+                    except KeyError:
+                        pass
+                time.sleep(0.5)
+                intentos += 1
+
             self.verbose=True
             ### IMPORTANTE 
             # El fovmat del robot solo lee su parte
@@ -304,7 +318,7 @@ def robot_thread(name,fovmat):
             self.laser_publisher = self.create_publisher(LaserScan, f'/sensor_{self.alias}/laser_scan', 10)
             # Timer 
             self.timerThread = self.create_timer(0.3, self.thread)
-            self.timerSensing=self.create_timer(15,self.sensing)
+            self.timerSensing=self.create_timer(0.1,self.sensing)
             self.timerDebug=self.create_timer(10,self.debugging)
 
             # Motores 

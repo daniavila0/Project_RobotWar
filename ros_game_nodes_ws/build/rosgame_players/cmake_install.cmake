@@ -91,27 +91,31 @@ if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT
 endif()
 
 if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT)
-  if(EXISTS "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/rosgame_players/pacific_player" AND
-     NOT IS_SYMLINK "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/rosgame_players/pacific_player")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/rosgame_players" TYPE DIRECTORY FILES "/home/daniel/Documentos/Project_ws/ros_game_nodes_ws/src/rosgame_players/launch")
+endif()
+
+if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT)
+  if(EXISTS "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/rosgame_players/fraud_player" AND
+     NOT IS_SYMLINK "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/rosgame_players/fraud_player")
     file(RPATH_CHECK
-         FILE "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/rosgame_players/pacific_player"
+         FILE "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/rosgame_players/fraud_player"
          RPATH "")
   endif()
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/rosgame_players" TYPE EXECUTABLE FILES "/home/daniel/Documentos/Project_ws/ros_game_nodes_ws/build/rosgame_players/pacific_player")
-  if(EXISTS "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/rosgame_players/pacific_player" AND
-     NOT IS_SYMLINK "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/rosgame_players/pacific_player")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/rosgame_players" TYPE EXECUTABLE FILES "/home/daniel/Documentos/Project_ws/ros_game_nodes_ws/build/rosgame_players/fraud_player")
+  if(EXISTS "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/rosgame_players/fraud_player" AND
+     NOT IS_SYMLINK "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/rosgame_players/fraud_player")
     file(RPATH_CHANGE
-         FILE "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/rosgame_players/pacific_player"
+         FILE "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/rosgame_players/fraud_player"
          OLD_RPATH "/home/daniel/Documentos/Project_ws/ros_game_nodes_ws/install/rosgame_bridge/lib:/opt/ros/rolling/lib:"
          NEW_RPATH "")
     if(CMAKE_INSTALL_DO_STRIP)
-      execute_process(COMMAND "/usr/bin/strip" "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/rosgame_players/pacific_player")
+      execute_process(COMMAND "/usr/bin/strip" "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/rosgame_players/fraud_player")
     endif()
   endif()
 endif()
 
 if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT)
-  include("/home/daniel/Documentos/Project_ws/ros_game_nodes_ws/build/rosgame_players/CMakeFiles/pacific_player.dir/install-cxx-module-bmi-noconfig.cmake" OPTIONAL)
+  include("/home/daniel/Documentos/Project_ws/ros_game_nodes_ws/build/rosgame_players/CMakeFiles/fraud_player.dir/install-cxx-module-bmi-noconfig.cmake" OPTIONAL)
 endif()
 
 if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT)

@@ -65,7 +65,7 @@ CMAKE_BINARY_DIR = /home/daniel/Documentos/Project_ws/ros_game_nodes_ws/build/ro
 # The main recursive "all" target.
 all: CMakeFiles/warrior_player.dir/all
 all: CMakeFiles/elusive_player.dir/all
-all: CMakeFiles/pacific_player.dir/all
+all: CMakeFiles/fraud_player.dir/all
 .PHONY : all
 
 # The main recursive "preinstall" target.
@@ -77,7 +77,7 @@ clean: CMakeFiles/uninstall.dir/clean
 clean: CMakeFiles/rosgame_players_uninstall.dir/clean
 clean: CMakeFiles/warrior_player.dir/clean
 clean: CMakeFiles/elusive_player.dir/clean
-clean: CMakeFiles/pacific_player.dir/clean
+clean: CMakeFiles/fraud_player.dir/clean
 .PHONY : clean
 
 #=============================================================================
@@ -185,30 +185,30 @@ CMakeFiles/elusive_player.dir/clean:
 .PHONY : CMakeFiles/elusive_player.dir/clean
 
 #=============================================================================
-# Target rules for target CMakeFiles/pacific_player.dir
+# Target rules for target CMakeFiles/fraud_player.dir
 
 # All Build rule for target.
-CMakeFiles/pacific_player.dir/all:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/pacific_player.dir/build.make CMakeFiles/pacific_player.dir/depend
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/pacific_player.dir/build.make CMakeFiles/pacific_player.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/daniel/Documentos/Project_ws/ros_game_nodes_ws/build/rosgame_players/CMakeFiles --progress-num=4,5,6 "Built target pacific_player"
-.PHONY : CMakeFiles/pacific_player.dir/all
+CMakeFiles/fraud_player.dir/all:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/fraud_player.dir/build.make CMakeFiles/fraud_player.dir/depend
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/fraud_player.dir/build.make CMakeFiles/fraud_player.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/daniel/Documentos/Project_ws/ros_game_nodes_ws/build/rosgame_players/CMakeFiles --progress-num=4,5,6 "Built target fraud_player"
+.PHONY : CMakeFiles/fraud_player.dir/all
 
 # Build rule for subdir invocation for target.
-CMakeFiles/pacific_player.dir/rule: cmake_check_build_system
+CMakeFiles/fraud_player.dir/rule: cmake_check_build_system
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/daniel/Documentos/Project_ws/ros_game_nodes_ws/build/rosgame_players/CMakeFiles 3
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/pacific_player.dir/all
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/fraud_player.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/daniel/Documentos/Project_ws/ros_game_nodes_ws/build/rosgame_players/CMakeFiles 0
-.PHONY : CMakeFiles/pacific_player.dir/rule
+.PHONY : CMakeFiles/fraud_player.dir/rule
 
 # Convenience name for target.
-pacific_player: CMakeFiles/pacific_player.dir/rule
-.PHONY : pacific_player
+fraud_player: CMakeFiles/fraud_player.dir/rule
+.PHONY : fraud_player
 
 # clean rule for target.
-CMakeFiles/pacific_player.dir/clean:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/pacific_player.dir/build.make CMakeFiles/pacific_player.dir/clean
-.PHONY : CMakeFiles/pacific_player.dir/clean
+CMakeFiles/fraud_player.dir/clean:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/fraud_player.dir/build.make CMakeFiles/fraud_player.dir/clean
+.PHONY : CMakeFiles/fraud_player.dir/clean
 
 #=============================================================================
 # Special targets to cleanup operation of make.
